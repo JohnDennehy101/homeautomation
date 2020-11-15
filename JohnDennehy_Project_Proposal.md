@@ -11,7 +11,7 @@ As I only have 1 Raspberry Pi (and each of the above proposals requires a differ
 
 
 ## Description - Automation of Light System
-The idea for my project is to automate certain activities in my house that are currently manaual (e.g. switching on the light in my sitting room when it is dark outside, switching on the light in my kitchen when a person is present as the room is always too dark and requires artificial light).
+The idea for my project is to automate certain activities in my house that are currently manual (e.g. switching on the light in my sitting room when it is dark outside, switching on the light in my kitchen when a person is present as the room is always too dark and requires artificial light).
 
 The first part of my project will implement an automation system for turning on the light in my sitting room when it is dark outside. 
 
@@ -23,7 +23,7 @@ This second value will be set via two API calls:
 The first API call will be to Mapbox to get the current latitude and longitude for my current address.
 The latitude and longitude returned from that call will be used as parameters in the Sunrise Sunset API.
 This will provide a response with the time of sunset for the day in question.
-If the luminence is below the threshold where the light should be displayed (to be determined via testing) and the current time is within a certain period of the sunset time for a given day, the value will be set to True.
+If the luminance is below the threshold where the light should be displayed (to be determined via testing) and the current time is within a certain period of the sunset time for a given day, the value will be set to True.
 
 I will create a channel on ThingSpeak to subscribe to this information.
 A check will be in place to see if current luminance is below the threshold where artificial light is not required and the second parameter is True.
