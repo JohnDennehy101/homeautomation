@@ -2,17 +2,15 @@
 #### Student Name: *John Dennehy*   Student ID: *20091408*
 
 ## Introduction
-*Project Overview*
 There are 3 different parts to my Home Automation & Running Analysis project:
--Automation of Indoor Lighting
--Control of Sonos Music Speakers
--Study of Impact (if any) of Weather Conditions on Running Performance
+- Automation of Indoor Lighting
+- Control of Sonos Music Speakers
+- Study of Impact (if any) of Weather Conditions on Running Performance
 
 As I only have 1 Raspberry Pi (and each of the above proposals requires a different program, I will be testing each program at different times).
 
 
-## Description (1)
-*Description - Automation of Light System*
+## Description - Automation of Light System
 The idea for my project is to automate certain activities in my house that are currently manaual (e.g. switching on the light in my sitting room when it is dark outside, switching on the light in my kitchen when a person is present as the room is always too dark and requires artificial light).
 
 The first part of my project will implement an automation system for turning on the light in my sitting room when it is dark outside. 
@@ -40,38 +38,38 @@ The value sent to ThingSpeak will contain the status of the sensor pin.
 I will create a channel on ThingSpeak to subscribe to this information.
 If a change in the sensor pin is detected, a ThingHTTP on ThingSpeak will trigger a IFTTT webhook which will fire the event to Kasa to turn on the smart plug in the kitchen (which the lamp is plugged into).
 
-## Tools, Technologies and Equipment
-*Proposed Tools - Automation of Light System*
-Raspberry Pi4
-Raspberry Pi Camera Module V2
-MQTT (broker.hivemq.com)
-IFTTT
-2 TP-Link Kasa Smart Wi-Fi Plugs
-Raspberry Pi Motion Detector PIR
-ThingSpeak
-Python3
+## Tools, Technologies and Equipment - Automation of Light System
+* Raspberry Pi4
+* Raspberry Pi Camera Module V2
+* MQTT (broker.hivemq.com)
+* IFTTT
+* 2 TP-Link Kasa Smart Wi-Fi Plugs
+* Raspberry Pi Motion Detector PIR
+* ThingSpeak
+* Python3
+* Visual Studio Code
+* Visual Studio Code - Remote - SSH Extension
 
 
-## Description (2)
-*Description - Control of Sonos Music Speakers*
+## Description - Control of Sonos Music Speakers
 My proposal for this part of the project is to use the Bluetooth protocol on my Android Phone (OnePlus 5T) via the Blue Dot Android application to pair my phone with the Raspberry Pi (via the bluedot Python library) in order to control the Sonos speakers in my house (via button clicks in the Android application).
 These speakers can already be controlled via WiFi but the connection to the speakers can be intermittent (and take some time to resolve once the issue occurs) so I want to develop an alternative solution to connect to the speakers when the WiFi connection to the speakers isn't functioning perfectly.
 
 The 'SoCo' Python library offers the capability to control Sonos speakers (via the IP address of each speaker) to complete different actions (Play Music, Setting volume, Stopping Music etc.) The IP address of each Sonos speaker will need to be obtained and then passed to the 'SoCo' library to complete an action (based on the button that has been clicked on the Blue Dot Android application on my phone).
 
-## Tools, Technologies and Equipment
-*Proposed Tools - Control of Sonos Music Speakers*
-Raspberry Pi4
-OnePlus 5T
-Bluetooth Protocol
-Blue Dot Android Application
-2 Sonos Play One Speakers
-'bluedot' Python Library
-'SoCo' Python Library
-Python3
+## Tools, Technologies and Equipment - Control of Sonos Music Speaker
+* Raspberry Pi4
+* OnePlus 5T
+* Bluetooth Protocol
+* Blue Dot Android Application
+* 2 Sonos Play One Speakers
+* 'bluedot' Python Library
+* 'SoCo' Python Library
+* Python3
+* Visual Studio Code
+* Visual Studio Code - Remote - SSH Extension
 
-## Description (3)
-*Description - Study of Impact (if any) of Weather Conditions on Running Performance*
+## Description - Study of Impact (if any) of Weather Conditions on Running Performance
 My proposal for this part of the project is to determine if weather conditions have an impact on my running performance. 
 I run a regular route so a crude comparison of different runs will be possible. I currently use a Garmin Forerunner 645M sports watch to track key stats on my runs.The data is pushed to Garmin Connect via Bluetooth on my OnePlus 5T. This triggers the push to Strava. As the Bluetooth on my phone is always on, data from Strava will be available 5-10 minutes after completion of the activity.
 
@@ -84,43 +82,18 @@ This information will also be available on a Firebase dashboard via the web appl
 An analysis will be undertaken of the data so that it will be possible to see if there is any correlation between weather conditions and running performance.
 
 
-## Tools, Technologies and Equipment
-*Proposed Tools - Study of Impact (if any) of Weather Conditions on Running Performance*
-Raspberry Pi4
-Garmin Forerunner 645M Watch
-OnePlus 5T
-Strava API
-Firebase Realtime Database
-Firebase Web Application
-Sense HAT
-Python3
-JavaScript
-HTML5
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TODO: Write a list of things you propose to use in your work. This can be hardware, programming languages etc.
-
-## Project Repository
-TODO: Create a repository for your project. You can add this proposal to it!
+## Tools, Technologies and Equipment - Study of Impact (if any) of Weather Conditions on Running Performance
+* Raspberry Pi4
+* Garmin Forerunner 645M Watch
+* OnePlus 5T
+* Strava API
+* Firebase Realtime Database
+* Firebase Web Application
+* Sense HAT
+* Python3
+* JavaScript
+* HTML5
+* Visual Studio Code
+* Visual Studio Code - Remote - SSH Extension
 
 
