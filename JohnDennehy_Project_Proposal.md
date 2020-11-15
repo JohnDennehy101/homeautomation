@@ -1,5 +1,6 @@
 # Home Automation & Running Analysis Project
 #### Student Name: *John Dennehy*   Student ID: *20091408*
+#### Github Repo - https://github.com/JohnDennehy101/homeautomation
 
 ## Introduction
 There are 3 different parts to my Home Automation & Running Analysis project:
@@ -95,5 +96,7 @@ An analysis will be undertaken of the data so that it will be possible to see if
 * HTML5
 * Visual Studio Code
 * Visual Studio Code - Remote - SSH Extension
+
+
 
 
