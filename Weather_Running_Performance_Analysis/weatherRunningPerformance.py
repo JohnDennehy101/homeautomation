@@ -5,6 +5,26 @@ import config
 from datetime import datetime
 #from sense_hat import SenseHat
 
+
+import firebase_admin
+from firebase_admin import credentials, firestore, storage, db
+
+
+cred = credentials.Certificate('./serviceAccountKey.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://weather-running-performance-default-rtdb.firebaseio.com/'
+})
+
+
+#Firebase good to go
+ref = db.reference('/')
+home_ref = ref.child('weatherData')
+
+home_ref.push({
+    'test': 'test'
+})
+
+
 latitude = '53.3634'
 longitude = '6.2579'
 apiKey = config.openWeatherApiKey
