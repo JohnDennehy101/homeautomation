@@ -26,7 +26,7 @@ home_ref.push({
 
 
 latitude = '53.3634'
-longitude = '6.2579'
+longitude = '-6.2579'
 apiKey = config.openWeatherApiKey
 
 stravaClientId = config.stravaClientId
