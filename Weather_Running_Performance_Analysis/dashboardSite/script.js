@@ -28,6 +28,58 @@ const database = firebase.database();
 // Create camera database reference
 const camRef = database.ref("weatherData");
 
+camRef.on("value", (snapshot) => {
+  let timeData = [];
+  let cloudData = [];
+  snapshot.forEach((child) => {
+    //console.log(child.key, child.val());
+    testArr.push(child.val());
+    console.log("intVal", testArr);
+    cloudData = loopThroughWeatherData(testArr);
+    timeData = WeatherTimeData(testArr);
+  });
+
+  var cloudCoverConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: cloudData,
+          label: "Cloud Cover Percentage",
+          borderColor: "#808080",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var chart = new Chart(cloudCover, cloudCoverConfig);
+  testArr = [];
+});
+
+var cloudCover = document.getElementById("cloudCoverChart").getContext("2d");
+
 let LatitudeLongitude = { lat: 53.3634, lng: -6.2579 };
 
 let map;
@@ -67,6 +119,50 @@ function initMap() {
       map,
       title: "Hello World!",
     }); */
+}
+
+function loopThroughWeatherData(arr) {
+  let finalArr = [];
+  for (i = 0; i < arr.length; i++) {
+    finalArr.push(arr[i].cloudCoverPercentage);
+    //cloudCoverPercentage: 54
+    /*description: "Cloudy"
+        humidity: 20
+        perceivedTemperature: 2.6
+        pressure: 10
+        rainVolumeLastHour: 0
+        temperature: 3.2
+        time: "14:14:45"
+        windDirectionDegrees: 90
+        windGust: 2.4
+        windSpeed: 3.5*/
+  }
+  return finalArr;
+}
+
+function test(time) {
+  console.log(time);
+}
+
+test(timeData);
+
+function WeatherTimeData(arr) {
+  let finalArr = [];
+  for (i = 0; i < arr.length; i++) {
+    finalArr.push(arr[i].time);
+    //cloudCoverPercentage: 54
+    /*description: "Cloudy"
+        humidity: 20
+        perceivedTemperature: 2.6
+        pressure: 10
+        rainVolumeLastHour: 0
+        temperature: 3.2
+        time: "14:14:45"
+        windDirectionDegrees: 90
+        windGust: 2.4
+        windSpeed: 3.5*/
+  }
+  return finalArr;
 }
 
 initMap();

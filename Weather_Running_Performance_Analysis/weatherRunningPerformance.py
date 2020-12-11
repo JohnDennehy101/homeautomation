@@ -2,7 +2,7 @@ import json
 import time
 import requests
 import config
-from datetime import datetime
+from datetime import datetime, date, timedelta
 #from sense_hat import SenseHat
 
 
@@ -16,12 +16,74 @@ firebase_admin.initialize_app(cred, {
 })
 
 
+date = '2020-12-06T11:25:10'
+endTimeStr = date[(date.index('T') + 1): ]
+endTimeObject = datetime.strptime(endTimeStr, '%H:%M:%S')
+moving_time = 2851
+
+def convert(n): 
+    #return str(endTimeObject + timedelta(seconds = n)) 
+    test = str(endTimeObject + timedelta(seconds = n))
+    testRef = test[11:]
+    return testRef
+    #return datetime.strptime(testRef, '%H:%M:%S')
+    #return test.minutes
+
+
+
+run_end_time = convert(moving_time) 
+
+start_date_local = '2020-12-06T11:25:10'
+
+def obtainRunDate(unformattedDateString):
+    return unformattedDateString[ :(unformattedDateString.index('T'))]
+
+
+run_date = obtainRunDate(start_date_local)
+
+def obtainRunStartTime(unformattedDateString):
+    return unformattedDateString[(unformattedDateString.index('T') + 1) :]
+
+run_start_time = obtainRunStartTime(start_date_local)
+
 #Firebase good to go
 ref = db.reference('/')
-home_ref = ref.child('weatherData')
+weather_data_ref = ref.child('weatherData')
+running_data_ref = ref.child('runningData')
 
-home_ref.push({
-    'test': 'test'
+weather_data_ref.push({
+    'temperature': 3.2,
+    'humidity': 20,
+    'pressure': 10,
+    'windSpeed': 3.5,
+    'windDirectionDegrees': 90,
+    'windGust': 2.4,
+    'cloudCoverPercentage': 54,
+    'rainVolumeLastHour': 0,
+    'perceivedTemperature': 2.6,
+    'description': 'Cloudy',
+    'time': '14:14:45'
+
+})
+
+running_data_ref.push({
+'title': 'Lunch Run',
+'distance': 7844.3,
+'moving_time': 2851,
+'total_elevation_gain': 78.0,
+'type': 'Run',
+'start_date_local': '2020-12-06T11:25:10',
+'run_date': run_date,
+'start_time': run_start_time,
+'end_time': run_end_time,
+'start_latlng': [53.361662, -6.25992], 
+'end_latlng': [53.362181, -6.260731], 
+'summary_polyline': 'keudInsee@Kj@a@xAw@hGw@|Eq@vF_AdG_@nBw@tG_@nC]pBe@zESpAs@lDInAGPIJy@CIGM@{@Aw@Mc@O_@WuAs@}DeB{DyBc@Sa@W_Aa@mAu@s@_@c@]_Ak@g@k@[o@U_@]a@m@cAsAgBuA{BMS]IGGOQWg@e@e@QK_@G_BIy@Ku@MwAKQGEGWIy@]o@QcB[eA[oB_As@Bq@Rq@Fg@LU@y@Ns@H_ARq@He@Gs@XOLq@HoAd@i@JqAZUBgBSyA?g@C_@Em@UGKBmAPo@l@cB`@aBRmAFmBGc@Ce@[_@Sa@OQIBKP[L{A@i@Q]G]Ka@KS[KKCs@@e@Ia@Jq@CKDcAHYFEH?NDl@@h@AXJh@LJABE@a@Bs@Au@O_@Sw@{@_CQu@MQSIOHGHcAhBQTIDM?kBOm@@[GMIO?GBMPOnAHzDKdBFx@KnCDzAAz@FhEBr@AhA@bANb@v@Vp@DjANV?jCf@x@AtABXLRRJFf@Ll@Hp@A`@Dt@Cb@DPHdA@rBk@v@QjAa@DINqA?c@h@eF@e@f@qDR{@NoBB}A|AkLFq@AQPoB?_@Le@?KNe@EUHaBf@gENmBJw@By@Fu@\\yARuALiAJ_@@q@DQDw@XqBVmAJ}@Py@LELUPBJHJ@f@XRPp@`@x@v@d@\\VHf@LZLn@`@vB|@p@PXNXXdAr@d@j@XJb@Tb@h@J@T?NDLNJD\\XRH\\VNBNLp@Rn@ZTRTLPNXNn@Rz@d@d@PfAx@VJdBT^LRBh@XPFPNn@C^K\\ODJl@\\\\@NJj@PfAz@zAn@HFLPPHDHhAz@j@Rv@j@^^`An@d@h@N\\LJJT?LBHLALN|@h@VKDBb@r@LJXN^Zb@l@p@h@NV?Hw@pE',
+'average_speed': 2.751,
+'max_speed': 4.6,
+'average_cadence': 78,
+'average_heartrate': 171.0,
+'max_heartrate': 189.0
 })
 
 
