@@ -25,18 +25,38 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 const database = firebase.database();
 
-// Create camera database reference
-const camRef = database.ref("weatherData");
+// Create weather database reference
+const weatherDataRef = database.ref("weatherData");
 
-camRef.on("value", (snapshot) => {
+// Create run database reference
+const runDataRef = database.ref("runningData");
+
+runDataRef.on("value", function (snapshot) {
+  let runDataArr = [];
+  snapshot.forEach((child) => {
+    runDataArr.push(child.val());
+    console.log(runDataArr);
+  });
+});
+
+weatherDataRef.limitToLast(60).on("value", function (snapshot) {
   let timeData = [];
   let cloudData = [];
+  let humidityData = [];
+  let perceivedTemperatureData = [];
+  let pressureData = [];
+  let rainVolumeData = [];
+  let windSpeedData = [];
+  let windGustData = [];
+
   snapshot.forEach((child) => {
     //console.log(child.key, child.val());
-    testArr.push(child.val());
-    console.log("intVal", testArr);
-    cloudData = loopThroughWeatherData(testArr);
-    timeData = WeatherTimeData(testArr);
+    weatherDataArr.push(child.val());
+    //console.log("intVal",cloudDataArr);
+
+    //cloudData = loopThroughWeatherData(weatherDataArr)
+    cloudData = loopThroughWeatherData(weatherDataArr, "cloudCoverPercentage");
+    timeData = WeatherTimeData(weatherDataArr);
   });
 
   var cloudCoverConfig = {
@@ -75,7 +95,7 @@ camRef.on("value", (snapshot) => {
   };
 
   var chart = new Chart(cloudCover, cloudCoverConfig);
-  testArr = [];
+  weatherDataArr = [];
 });
 
 var cloudCover = document.getElementById("cloudCoverChart").getContext("2d");
@@ -83,6 +103,51 @@ var cloudCover = document.getElementById("cloudCoverChart").getContext("2d");
 let LatitudeLongitude = { lat: 53.3634, lng: -6.2579 };
 
 let map;
+
+function loopThroughWeatherData(arr, weatherCondition) {
+  let finalArr = [];
+  for (i = 0; i < arr.length; i++) {
+    finalArr.push(arr[i][weatherCondition]);
+    //finalArr.push(arr[i].cloudCoverPercentage);
+    //cloudCoverPercentage: 54
+    description: "Cloudy";
+    humidity: 20;
+    perceivedTemperature: 2.6;
+    pressure: 10;
+    rainVolumeLastHour: 0;
+    temperature: 3.2;
+    time: "14:14:45";
+    windDirectionDegrees: 90;
+    windGust: 2.4;
+    windSpeed: 3.5;
+  }
+  return finalArr;
+}
+
+function test(time) {
+  console.log(time);
+}
+
+test(timeData);
+
+function WeatherTimeData(arr) {
+  let finalArr = [];
+  for (i = 0; i < arr.length; i++) {
+    finalArr.push(arr[i].time);
+    //cloudCoverPercentage: 54
+    description: "Cloudy";
+    humidity: 20;
+    perceivedTemperature: 2.6;
+    pressure: 10;
+    rainVolumeLastHour: 0;
+    temperature: 3.2;
+    time: "14:14:45";
+    windDirectionDegrees: 90;
+    windGust: 2.4;
+    windSpeed: 3.5;
+  }
+  return finalArr;
+}
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -121,50 +186,6 @@ function initMap() {
     }); */
 }
 
-function loopThroughWeatherData(arr) {
-  let finalArr = [];
-  for (i = 0; i < arr.length; i++) {
-    finalArr.push(arr[i].cloudCoverPercentage);
-    //cloudCoverPercentage: 54
-    /*description: "Cloudy"
-        humidity: 20
-        perceivedTemperature: 2.6
-        pressure: 10
-        rainVolumeLastHour: 0
-        temperature: 3.2
-        time: "14:14:45"
-        windDirectionDegrees: 90
-        windGust: 2.4
-        windSpeed: 3.5*/
-  }
-  return finalArr;
-}
-
-function test(time) {
-  console.log(time);
-}
-
-test(timeData);
-
-function WeatherTimeData(arr) {
-  let finalArr = [];
-  for (i = 0; i < arr.length; i++) {
-    finalArr.push(arr[i].time);
-    //cloudCoverPercentage: 54
-    /*description: "Cloudy"
-        humidity: 20
-        perceivedTemperature: 2.6
-        pressure: 10
-        rainVolumeLastHour: 0
-        temperature: 3.2
-        time: "14:14:45"
-        windDirectionDegrees: 90
-        windGust: 2.4
-        windSpeed: 3.5*/
-  }
-  return finalArr;
-}
-
 initMap();
 
 // Sync on any updates to the DB. THIS CODE RUNS EVERY TIME AN UPDATE OCCURS ON THE DB.
@@ -175,3 +196,17 @@ camRef.limitToLast(1).on("value", function (snapshot) {
     document.getElementById("test").textContent = image;
   });
 });
+
+function getDateData() {
+  var data = [];
+  for (var i = 0; i < assessmentDates.length; i++) {
+    let time = assessmentDates[i].indexOf("-202");
+    let formattedDate = "";
+
+    formattedDate = assessmentDates[i].substr(0, time);
+
+    data.push(formattedDate);
+  }
+
+  return data;
+}
