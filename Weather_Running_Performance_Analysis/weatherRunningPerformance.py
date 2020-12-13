@@ -12,6 +12,9 @@ from firebase_admin import credentials, firestore, storage, db
 runningApiCounter = 0
 weatherDataCounter = 0
 
+latitude = '53.3634'
+longitude = '-6.2579'
+
 
 cred = credentials.Certificate('./serviceAccountKey.json')
 firebase_admin.initialize_app(cred, {
@@ -94,58 +97,58 @@ ref = db.reference('/')
 weather_data_ref = ref.child('weatherData')
 running_data_ref = ref.child('runningData')
 
-weather_data_ref.push({
-    'temperature': 3.2,
-    'humidity': 20,
-    'pressure': 10,
-    'windSpeed': 3.5,
-    'windDirectionDegrees': 90,
-    'windGust': 2.4,
-    'cloudCoverPercentage': 54,
-    'rainVolumeLastHour': 0,
-    'perceivedTemperature': 2.6,
-    'description': 'Cloudy',
-    'time': '14:14:45'
 
-})
-
-running_data_ref.push({
-'title': 'Lunch Run',
-'distance': 7844.3,
-'moving_time': 2851,
-'total_elevation_gain': 78.0,
-'type': 'Run',
-'start_date_local': '2020-12-06T11:25:10',
-'run_date': run_date,
-'start_time': run_start_time,
-'end_time': run_end_time,
-'start_latlng': [53.361662, -6.25992], 
-'end_latlng': [53.362181, -6.260731], 
-'summary_polyline': 'keudInsee@Kj@a@xAw@hGw@|Eq@vF_AdG_@nBw@tG_@nC]pBe@zESpAs@lDInAGPIJy@CIGM@{@Aw@Mc@O_@WuAs@}DeB{DyBc@Sa@W_Aa@mAu@s@_@c@]_Ak@g@k@[o@U_@]a@m@cAsAgBuA{BMS]IGGOQWg@e@e@QK_@G_BIy@Ku@MwAKQGEGWIy@]o@QcB[eA[oB_As@Bq@Rq@Fg@LU@y@Ns@H_ARq@He@Gs@XOLq@HoAd@i@JqAZUBgBSyA?g@C_@Em@UGKBmAPo@l@cB`@aBRmAFmBGc@Ce@[_@Sa@OQIBKP[L{A@i@Q]G]Ka@KS[KKCs@@e@Ia@Jq@CKDcAHYFEH?NDl@@h@AXJh@LJABE@a@Bs@Au@O_@Sw@{@_CQu@MQSIOHGHcAhBQTIDM?kBOm@@[GMIO?GBMPOnAHzDKdBFx@KnCDzAAz@FhEBr@AhA@bANb@v@Vp@DjANV?jCf@x@AtABXLRRJFf@Ll@Hp@A`@Dt@Cb@DPHdA@rBk@v@QjAa@DINqA?c@h@eF@e@f@qDR{@NoBB}A|AkLFq@AQPoB?_@Le@?KNe@EUHaBf@gENmBJw@By@Fu@\\yARuALiAJ_@@q@DQDw@XqBVmAJ}@Py@LELUPBJHJ@f@XRPp@`@x@v@d@\\VHf@LZLn@`@vB|@p@PXNXXdAr@d@j@XJb@Tb@h@J@T?NDLNJD\\XRH\\VNBNLp@Rn@ZTRTLPNXNn@Rz@d@d@PfAx@VJdBT^LRBh@XPFPNn@C^K\\ODJl@\\\\@NJj@PfAz@zAn@HFLPPHDHhAz@j@Rv@j@^^`An@d@h@N\\LJJT?LBHLALN|@h@VKDBb@r@LJXN^Zb@l@p@h@NV?Hw@pE',
-'average_speed': 2.751,
-'max_speed': 4.6,
-'average_cadence': 78,
-'average_heartrate': 171.0,
-'max_heartrate': 189.0
-})
 
 while True:
     #print(firstApiArr)
     #print(runningApiCounter)
     #print(weatherDataCounter)
-    if weatherDataCounter == 10:
+    print(weatherDataCounter)
+    if weatherDataCounter == 5:
+
+        openWeatherResponse = requests.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=metric&exclude=hourly,minutely,daily&appid=" + config.openWeatherApiKey)
+
+        openWeatherJsonResponse = openWeatherResponse.json()
+        apiResponseTemp = openWeatherJsonResponse["current"]["temp"]
+        apiResponsePerceivedTemp = openWeatherJsonResponse["current"]["feels_like"]
+        apiResponsePressure = openWeatherJsonResponse["current"]["pressure"]
+        apiResponseWindSpeed = openWeatherJsonResponse["current"]["wind_speed"]
+        apiResponseWindDegree = openWeatherJsonResponse["current"]["wind_deg"]
+        apiResponseWindGust = openWeatherJsonResponse["current"]["wind_gust"]
+        apiResponseCloudCover = openWeatherJsonResponse["current"]["clouds"]
+
+        if "rain" not in openWeatherJsonResponse:
+            apiResponseRainLastHour = 0
+        else:
+            apiResponseRainLastHour = openWeatherJsonResponse["current"]["rain"]["1h"]
+
+
+        apiResponseWeatherDescription = openWeatherJsonResponse["current"]["weather"][0]["main"]
+
+        now = datetime.now()
+        currentTime = now.strftime("%H:%M:%S")
+
+
+
+        #sense = SenseHat()
+
+        #sensehatTemp = round(sense.get_temperature(), 2)
+        #sensehatPressure = round(sense.get_pressure(), 2)
+        #sensehatHumidity = round(sense.get_humidity(), 2)
+        #MAY PUSH TEMP FROM EITHER API RESPONSE OR SENSEHAT
+
         weather_data_ref.push({
-        'temperature': 3.2,
+        'temperature': apiResponseTemp,
         'humidity': 20,
-        'pressure': 10,
-        'windSpeed': 3.5,
-        'windDirectionDegrees': 90,
-        'windGust': 2.4,
-        'cloudCoverPercentage': 54,
-        'rainVolumeLastHour': 0,
-        'perceivedTemperature': 2.6,
-        'description': 'Cloudy',
-        'time': '14:14:45'
+        'pressure': apiResponsePressure,
+        'windSpeed': apiResponseWindSpeed,
+        'windDirectionDegrees': apiResponseWindDegree,
+        'windGust': apiResponseWindGust,
+        'cloudCoverPercentage': apiResponseCloudCover,
+        'rainVolumeLastHour': apiResponseRainLastHour,
+        'perceivedTemperature': apiResponsePerceivedTemp,
+        'description': apiResponseWeatherDescription,
+        'time': currentTime
         })
         weatherDataCounter = 0
 #I think 300 will be good for production
@@ -273,98 +276,66 @@ while True:
         #firstApiArr = firstApiCallRunsArray.wait()
         secondApiCallRunsArray.wait()
         print(len(firstApiArr))
-        print(len(firstApiArr) == len(secondApiArr))
+        
+
+        #Checking to see if new activity is present. If so it will need to be pushed to Firebase
+        if len(firstApiArr) != len(secondApiArr):
+            sortedRunsArray = sorted(secondApiArr, key=lambda x: datetime.strptime(x['start_date_local'], '%Y-%m-%dT%H:%M:%SZ'), reverse=True)
+            #newRunDistance = runsArray[0]["distance"]
+            newRunTitle = sortedRunsArray[0]["name"]
+            newRunDistance = sortedRunsArray[0]["distance"]
+            newRunMovingTime = sortedRunsArray[0]["elapsed_time"]
+            newRunElevationGain = sortedRunsArray[0]["total_elevation_gain"]
+            newRunType = sortedRunsArray[0]["type"]
+            #Need to format this
+            newRunStartDateLocal = sortedRunsArray[0]["start_date_local"]
+            newRunDate = obtainRunDate(newRunStartDateLocal)
+            newRunStartTime = obtainRunStartTime(newRunStartDateLocal)
+            newRunEndTime = convert(newRunMovingTime)
+            newRunStartLatitudeLongitude = sortedRunsArray[0]["start_latlng"]
+            newRunEndLatitudeLongitude = sortedRunsArray[0]["end_latlng"]
+            newRunSummaryPolyline = sortedRunsArray[0]["map"]["summary_polyline"]
+            newRunAverageSpeed = sortedRunsArray[0]["average_speed"]
+            newRunMaxSpeed = sortedRunsArray[0]["max_speed"]
+            newRunAverageCadence = sortedRunsArray[0]["average_cadence"]
+            newRunAverageHeartRate = sortedRunsArray[0]["average_heartrate"]
+            newRunMaxHeartRate = sortedRunsArray[0]["max_heartrate"]
+
+            running_data_ref.push({
+            'title': newRunTitle,
+            'distance': newRunDistance,
+            'moving_time': newRunMovingTime,
+            'total_elevation_gain': newRunElevationGain,
+            'type': newRunType,
+            'start_date_local': newRunStartDateLocal,
+            'run_date': newRunDate,
+            'start_time': newRunStartTime,
+            'end_time': newRunEndTime,
+            'start_latlng': newRunStartLatitudeLongitude, 
+            'end_latlng': newRunEndLatitudeLongitude, 
+            'summary_polyline': newRunSummaryPolyline,
+            'average_speed': newRunAverageSpeed,
+            'max_speed': newRunMaxSpeed,
+            'average_cadence': newRunAverageCadence,
+            'average_heartrate': newRunAverageHeartRate,
+            'max_heartrate': newRunMaxHeartRate
+            })
+
+
+
+
+
+
         runningApiCounter = 0
         weatherDataCounter = 0
 
     
     #print(firstApiCallRunsArray)
 
-    runningApiCounter = runningApiCounter + 1
+    #Commenting out to save on Strava API calls
+    #runningApiCounter = runningApiCounter + 1
     weatherDataCounter = weatherDataCounter + 1
 
-    time.sleep(6)
 
 
-
-
-
-
-running_data_ref.push({
-'title': 'Lunch Run',
-'distance': 7844.3,
-'moving_time': 2851,
-'total_elevation_gain': 78.0,
-'type': 'Run',
-'start_date_local': '2020-12-06T11:25:10',
-'run_date': run_date,
-'start_time': run_start_time,
-'end_time': run_end_time,
-'start_latlng': [53.361662, -6.25992], 
-'end_latlng': [53.362181, -6.260731], 
-'summary_polyline': 'keudInsee@Kj@a@xAw@hGw@|Eq@vF_AdG_@nBw@tG_@nC]pBe@zESpAs@lDInAGPIJy@CIGM@{@Aw@Mc@O_@WuAs@}DeB{DyBc@Sa@W_Aa@mAu@s@_@c@]_Ak@g@k@[o@U_@]a@m@cAsAgBuA{BMS]IGGOQWg@e@e@QK_@G_BIy@Ku@MwAKQGEGWIy@]o@QcB[eA[oB_As@Bq@Rq@Fg@LU@y@Ns@H_ARq@He@Gs@XOLq@HoAd@i@JqAZUBgBSyA?g@C_@Em@UGKBmAPo@l@cB`@aBRmAFmBGc@Ce@[_@Sa@OQIBKP[L{A@i@Q]G]Ka@KS[KKCs@@e@Ia@Jq@CKDcAHYFEH?NDl@@h@AXJh@LJABE@a@Bs@Au@O_@Sw@{@_CQu@MQSIOHGHcAhBQTIDM?kBOm@@[GMIO?GBMPOnAHzDKdBFx@KnCDzAAz@FhEBr@AhA@bANb@v@Vp@DjANV?jCf@x@AtABXLRRJFf@Ll@Hp@A`@Dt@Cb@DPHdA@rBk@v@QjAa@DINqA?c@h@eF@e@f@qDR{@NoBB}A|AkLFq@AQPoB?_@Le@?KNe@EUHaBf@gENmBJw@By@Fu@\\yARuALiAJ_@@q@DQDw@XqBVmAJ}@Py@LELUPBJHJ@f@XRPp@`@x@v@d@\\VHf@LZLn@`@vB|@p@PXNXXdAr@d@j@XJb@Tb@h@J@T?NDLNJD\\XRH\\VNBNLp@Rn@ZTRTLPNXNn@Rz@d@d@PfAx@VJdBT^LRBh@XPFPNn@C^K\\ODJl@\\\\@NJj@PfAz@zAn@HFLPPHDHhAz@j@Rv@j@^^`An@d@h@N\\LJJT?LBHLALN|@h@VKDBb@r@LJXN^Zb@l@p@h@NV?Hw@pE',
-'average_speed': 2.751,
-'max_speed': 4.6,
-'average_cadence': 78,
-'average_heartrate': 171.0,
-'max_heartrate': 189.0
-})
-
-
-
-
-
-
-
-sortedRunsArray = sorted(runsArray, key=lambda x: datetime.strptime(x['start_date_local'], '%Y-%m-%dT%H:%M:%SZ'), reverse=True)
-
-print(sortedRunsArray)
-
-
-newNumberOfRunsCount = len(runsArray)
-
-
-newRunDistance = runsArray[0]["distance"]
-newRunMovingTime = runsArray[0]["elapsed_time"]
-newRunElevationGain = runsArray[0]["total_elevation_gain"]
-#Need to format this
-newRunStartDate = runsArray[0]["start_date_local"]
-newRunAverageHeartRate = runsArray[0]["average_heartrate"]
-newRunMaxHeartRate = runsArray[0]["max_heartrate"]
-#Possibly push start and end latitude and longitude if I can figure out how to display this via Google Map (NICE TO HAVE)
-
-#Figure out how strava pushes speed back - might be miles per hour from look of API response
-
-
-
-
-
-print(newRunDistance)
-
-
-if newNumberOfRunsCount - oldNumberOfRunsCount == 1:
-    #push to Firebase
-    a = b
-
-
-#Setting length of array before nextAPIcheck
-oldNumberOfRunsCount = newNumberOfRunsCount
-
-#openWeatherResponse = requests.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=metric&exclude=hourly,minutely,daily&appid=" + apiKey)
-
-#openWeatherJsonResponse = openWeatherResponse.json()
-#apiResponseTemp = openWeatherJsonResponse["current"]["temp"]
-#apiResponsePerceivedTemp = openWeatherJsonResponse["current"]["feels_like"]
-#apiResponsePressure = openWeatherJsonResponse["current"]["pressure"]
-#apiResponseWindSpeed = openWeatherJsonResponse["current"]["wind_speed"]
-#apiResponseWindDegree = openWeatherJsonResponse["current"]["wind_deg"]
-#apiResponseWindGust = openWeatherJsonResponse["current"]["wind_gust"]
-#apiResponseWeatherDescription = openWeatherJsonResponse["current"]["weather"]["main"]
-
-
-
-#sense = SenseHat()
-
-#sensehatTemp = round(sense.get_temperature(), 2)
-#sensehatPressure = round(sense.get_pressure(), 2)
-#sensehatHumidity = round(sense.get_humidity(), 2)
+    time.sleep(3)
