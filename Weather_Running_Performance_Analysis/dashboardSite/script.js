@@ -40,69 +40,162 @@ runDataRef.on("value", function (snapshot) {
   let latestRun = runDataArr[runDataArr.length - 1];
   console.log(latestRun);
   let runContainerElem = document.createElement("div");
-  runContainerElem.style.width = "70%";
+  //runContainerElem.id = 'runContainerMap'
+  //runContainerElem.style.width = '70%';
   //runContainerElem.style.display = 'flex'
   let mapElem = document.createElement("div");
   mapElem.id = "map";
   let runInfoContainerElem = document.createElement("div");
   //Need to come back to this - adding material icons would be a nice touch
-  let averageRunCadence = document.createElement("p");
-  averageRunCadence.style.display = "inline-block";
+  //let averageRunCadence = document.createElement('p')
+  let averageRunCadence = document.createElement("div");
+  averageRunCadence.classList.add("runMetric");
+  //averageRunCadence.style.display = 'inline-block'
   averageRunCadence.style.width = "50%";
-  averageRunCadence.textContent = latestRun["average_cadence"];
-  let averageRunHeartRate = document.createElement("p");
-  averageRunHeartRate.style.display = "inline-block";
+  //averageRunCadence.textContent = 'Average Cadence ' + latestRun['average_cadence']
+  averageRunCadence.innerHTML =
+    '<p>Average Cadence</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["average_cadence"] +
+    "</p>";
+
+  //let averageRunHeartRate = document.createElement('p')
+  let averageRunHeartRate = document.createElement("div");
+  //averageRunHeartRate.style.display = 'inline-block'
+  averageRunHeartRate.classList.add("runMetric");
   averageRunHeartRate.style.width = "50%";
-  averageRunHeartRate.textContent = latestRun["average_heartrate"];
-  let averageRunSpeed = document.createElement("p");
-  averageRunSpeed.style.display = "inline-block";
+  //averageRunHeartRate.textContent = 'Average Heart Rate ' + latestRun['average_heartrate']
+  averageRunHeartRate.innerHTML =
+    '<p>Average Heart Rate</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["average_heartrate"] +
+    "</p>";
+
+  //let averageRunSpeed = document.createElement('p')
+  let averageRunSpeed = document.createElement("div");
+  averageRunSpeed.classList.add("runMetric");
+  //averageRunSpeed.style.display = 'inline-block'
   averageRunSpeed.style.width = "50%";
-  averageRunSpeed.textContent = latestRun["average_speed"];
+  //averageRunSpeed.textContent = 'Average Speed ' + latestRun['average_speed']
+  averageRunSpeed.innerHTML =
+    '<p>Average Speed</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["average_speed"] +
+    "</p>";
   //Latitude and Longitude positions for Google Maps Markers
   let startLatitudeLongitude = latestRun["start_latlng"];
   let endLatitudeLongitude = latestRun["end_latlng"];
-  let maxHeartRate = document.createElement("p");
-  maxHeartRate.textContent = latestRun["max_heartrate"];
-  maxHeartRate.style.display = "inline-block";
+
+  //let maxHeartRate = document.createElement('p')
+  let maxHeartRate = document.createElement("div");
+  maxHeartRate.classList.add("runMetric");
+  maxHeartRate.innerHTML =
+    '<p>Max Heart Rate</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["max_heartrate"] +
+    "</p>";
+  //maxHeartRate.textContent = 'Max Heart Rate ' + latestRun['max_heartrate']
+  //maxHeartRate.style.display = 'inline-block'
   maxHeartRate.style.width = "50%";
-  let maxRunSpeed = document.createElement("p");
-  maxRunSpeed.style.display = "inline-block";
+
+  //let maxRunSpeed = document.createElement('p')
+  let maxRunSpeed = document.createElement("div");
+  maxRunSpeed.classList.add("runMetric");
+  //maxRunSpeed.style.display = 'inline-block'
   maxRunSpeed.style.width = "50%";
-  maxRunSpeed.textContent = latestRun["max_speed"];
-  let movingTime = document.createElement("p");
-  movingTime.style.display = "inline-block";
+  //maxRunSpeed.textContent = 'Max Speed ' + latestRun['max_speed']
+  maxRunSpeed.innerHTML =
+    '<p>Max Speed</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["max_speed"] +
+    "</p>";
+
+  //let movingTime = document.createElement('p')
+  let movingTime = document.createElement("div");
+  movingTime.classList.add("runMetric");
+  //movingTime.style.display = 'inline-block'
   movingTime.style.width = "50%";
-  movingTime.textContent = latestRun["moving_time"];
-  let runDate = document.createElement("p");
-  runDate.style.display = "inline-block";
+  //movingTime.textContent = 'Moving Time (seconds) ' + latestRun['moving_time']
+  movingTime.innerHTML =
+    '<p>Moving Time (seconds)</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["moving_time"] +
+    "</p>";
+  //let runDate = document.createElement('p')
+  let runDate = document.createElement("div");
+  //runDate.style.display = 'inline-block'
+
   runDate.style.width = "50%";
-  runDate.textContent = latestRun["run_date"];
+  runDate.classList.add("runMetric");
+  runDate.innerHTML =
+    '<p>Run Date</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["run_date"] +
+    "</p>";
+  //runDate.textContent = 'Run Date ' + latestRun['run_date']
 
-  let runStartTime = document.createElement("p");
-  runStartTime.style.display = "inline-block";
+  //let runStartTime = document.createElement('p')
+  let runStartTime = document.createElement("div");
+  runStartTime.classList.add("runMetric");
+  //runStartTime.style.display = 'inline-block'
   runStartTime.style.width = "50%";
-  runStartTime.textContent = latestRun["start_time"];
-  let runEndTime = document.createElement("p");
-  runEndTime.style.display = "inline-block";
-  runEndTime.style.width = "50%";
-  runEndTime.textContent = latestRun["end_time"];
+  //runStartTime.textContent = 'Start Time ' + latestRun['start_time']
+  runStartTime.innerHTML =
+    '<p>Run Start Time</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["start_time"] +
+    "</p>";
 
-  let activityType = document.createElement("p");
-  activityType.textContent = latestRun["type"];
-  activityType.style.display = "inline-block";
+  //let runEndTime = document.createElement('p')
+  let runEndTime = document.createElement("div");
+  runEndTime.classList.add("runMetric");
+  //runEndTime.style.display = 'inline-block'
+  runEndTime.style.width = "50%";
+  //runEndTime.textContent = 'End Time ' + latestRun['end_time']
+  runEndTime.innerHTML =
+    '<p>Run End Time</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["end_time"] +
+    "</p>";
+
+  //let activityType = document.createElement('p')
+  let activityType = document.createElement("div");
+  activityType.classList.add("runMetric");
+  activityType.innerHTML =
+    '<p>Activity Type</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["type"] +
+    "</p>";
+  //activityType.textContent = 'Activity Type ' + latestRun['type']
+  //activityType.style.display = 'inline-block'
   activityType.style.width = "50%";
 
   //Polyline for Google Maps Display
   let summaryPolyline = latestRun["summary_polyline"];
 
-  let runTitle = document.createElement("p");
-  runTitle.textContent = latestRun["title"];
-  runTitle.style.display = "inline-block";
+  //let runTitle = document.createElement('p')
+  let runTitle = document.createElement("div");
+  runTitle.classList.add("runMetric");
+
+  //runTitle.textContent = 'Activity Title ' + latestRun['title']
+  runTitle.innerHTML =
+    '<p>Activity Title</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["title"] +
+    "</p>";
+  //runTitle.style.display = 'inline-block';
   runTitle.style.width = "50%";
-  let runElevationGain = document.createElement("p");
-  runElevationGain.style.display = "inline-block";
+  //let runElevationGain = document.createElement('p')
+  let runElevationGain = document.createElement("div");
+  runElevationGain.classList.add("runMetric");
+  //runElevationGain.style.display = 'inline-block'
   runElevationGain.style.width = "50%";
-  runElevationGain.textContent = latestRun["total_elevation_gain"];
+  //runElevationGain.textContent = 'Total Elevation Gain ' + latestRun['total_elevation_gain']
+  runElevationGain.innerHTML =
+    '<p>Elevation Gain</p><i class="material-icons">arrow_forward</i>' +
+    "<p>" +
+    latestRun["total_elevation_gain"] +
+    "</p>";
 
   //Appending items (probably will be changed)
   runInfoContainerElem.appendChild(runTitle);
@@ -116,24 +209,86 @@ runDataRef.on("value", function (snapshot) {
   runInfoContainerElem.appendChild(averageRunSpeed);
   runInfoContainerElem.appendChild(maxRunSpeed);
 
+  runInfoContainerElem.appendChild(movingTime);
+
   runInfoContainerElem.appendChild(runStartTime);
   runInfoContainerElem.appendChild(runEndTime);
 
-  runInfoContainerElem.appendChild(movingTime);
   runInfoContainerElem.appendChild(runElevationGain);
 
   runInfoContainerElem.appendChild(activityType);
+
+  runInfoContainerElem.classList.add("runInfoContainer");
 
   let latestRunContainerPlaceHolder = document.getElementById(
     "latestRunContainerPlaceHolder"
   );
 
   runContainerElem.appendChild(runInfoContainerElem);
+  latestRunContainerPlaceHolder.appendChild(mapElem);
   latestRunContainerPlaceHolder.appendChild(runContainerElem);
+
+  //Commenting out to save on API calls
+  //initMap(summaryPolyline, startLatitudeLongitude, endLatitudeLongitude)
+  console.log(startLatitudeLongitude);
 
   console.log(summaryPolyline);
   console.log(weatherDataArr);
 });
+
+function initMap(polyline, startLatitudeLongitude, endLatitudeLongitude) {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 53.3634, lng: -6.2579 },
+    zoom: 16,
+  });
+
+  let encoded_data = polyline;
+  let decode = google.maps.geometry.encoding.decodePath(encoded_data);
+
+  let line = new google.maps.Polyline({
+    path: decode,
+    strokeColor: "#00008B",
+    strokeOpacity: 1.0,
+    strokeWeight: 4,
+    zIndex: 3,
+  });
+
+  function zoomToObject(obj) {
+    var bounds = new google.maps.LatLngBounds();
+    var points = obj.getPath().getArray();
+    for (var n = 0; n < points.length; n++) {
+      bounds.extend(points[n]);
+    }
+    map.fitBounds(bounds);
+  }
+
+  zoomToObject(line);
+
+  line.setMap(map);
+
+  let startLatLng = {
+    lat: startLatitudeLongitude[0],
+    lng: startLatitudeLongitude[1],
+  };
+  console.log(startLatLng);
+  let endLatLng = {
+    lat: endLatitudeLongitude[0],
+    lng: endLatitudeLongitude[1],
+  };
+  new google.maps.Marker({
+    position: startLatLng,
+    map,
+    icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+    title: "Hello World!",
+  });
+
+  new google.maps.Marker({
+    position: endLatLng,
+    map,
+    icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    title: "Hello World!",
+  });
+}
 
 weatherDataRef.limitToLast(60).on("value", function (snapshot) {
   let timeData = [];
@@ -525,45 +680,6 @@ function WeatherTimeData(arr) {
   }
   return finalArr;
 }
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 53.3634, lng: -6.2579 },
-    zoom: 16,
-  });
-
-  let encoded_data =
-    "keudInsee@Kj@a@xAw@hGw@|Eq@vF_AdG_@nBw@tG_@nC]pBe@zESpAs@lDInAGPIJy@CIGM@{@Aw@Mc@O_@WuAs@}DeB{DyBc@Sa@W_Aa@mAu@s@_@c@]_Ak@g@k@[o@U_@]a@m@cAsAgBuA{BMS]IGGOQWg@e@e@QK_@G_BIy@Ku@MwAKQGEGWIy@]o@QcB[eA[oB_As@Bq@Rq@Fg@LU@y@Ns@H_ARq@He@Gs@XOLq@HoAd@i@JqAZUBgBSyA?g@C_@Em@UGKBmAPo@l@cB`@aBRmAFmBGc@Ce@[_@Sa@OQIBKP[L{A@i@Q]G]Ka@KS[KKCs@@e@Ia@Jq@CKDcAHYFEH?NDl@@h@AXJh@LJABE@a@Bs@Au@O_@Sw@{@_CQu@MQSIOHGHcAhBQTIDM?kBOm@@[GMIO?GBMPOnAHzDKdBFx@KnCDzAAz@FhEBr@AhA@bANb@v@Vp@DjANV?jCf@x@AtABXLRRJFf@Ll@Hp@A`@Dt@Cb@DPHdA@rBk@v@QjAa@DINqA?c@h@eF@e@f@qDR{@NoBB}A|AkLFq@AQPoB?_@Le@?KNe@EUHaBf@gENmBJw@By@Fu@\\yARuALiAJ_@@q@DQDw@XqBVmAJ}@Py@LELUPBJHJ@f@XRPp@`@x@v@d@\\VHf@LZLn@`@vB|@p@PXNXXdAr@d@j@XJb@Tb@h@J@T?NDLNJD\\XRH\\VNBNLp@Rn@ZTRTLPNXNn@Rz@d@d@PfAx@VJdBT^LRBh@XPFPNn@C^K\\ODJl@\\\\@NJj@PfAz@zAn@HFLPPHDHhAz@j@Rv@j@^^`An@d@h@N\\LJJT?LBHLALN|@h@VKDBb@r@LJXN^Zb@l@p@h@NV?Hw@pE";
-  let decode = google.maps.geometry.encoding.decodePath(encoded_data);
-
-  let line = new google.maps.Polyline({
-    path: decode,
-    strokeColor: "#00008B",
-    strokeOpacity: 1.0,
-    strokeWeight: 4,
-    zIndex: 3,
-  });
-
-  function zoomToObject(obj) {
-    var bounds = new google.maps.LatLngBounds();
-    var points = obj.getPath().getArray();
-    for (var n = 0; n < points.length; n++) {
-      bounds.extend(points[n]);
-    }
-    map.fitBounds(bounds);
-  }
-
-  zoomToObject(line);
-
-  line.setMap(map);
-  /*new google.maps.Marker({
-      position: LatitudeLongitude,
-      map,
-      title: "Hello World!",
-    }); */
-}
-
-initMap();
 
 // Sync on any updates to the DB. THIS CODE RUNS EVERY TIME AN UPDATE OCCURS ON THE DB.
 camRef.limitToLast(1).on("value", function (snapshot) {
