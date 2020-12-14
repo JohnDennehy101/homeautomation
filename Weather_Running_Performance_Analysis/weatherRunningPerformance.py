@@ -4,13 +4,21 @@ import requests
 import config
 from datetime import datetime, date, timedelta
 import threading
+from twilio.rest import Client
 #from sense_hat import SenseHat
 
 import firebase_admin
 from firebase_admin import credentials, firestore, storage, db
 
+account_sid = config.twilio_account_sid
+auth_token = config.twilio_auth_token
+
+#Initiating Twilio client
+client = Client(account_sid, auth_token)
+
 runningApiCounter = 0
 weatherDataCounter = 0
+
 
 latitude = '53.3634'
 longitude = '-6.2579'
@@ -48,7 +56,7 @@ def obtainRunDate(unformattedDateString):
 run_date = obtainRunDate(start_date_local)
 
 def obtainRunStartTime(unformattedDateString):
-    return unformattedDateString[(unformattedDateString.index('T') + 1) :]
+    return unformattedDateString[(unformattedDateString.index('T') + 1) : (unformattedDateString.index('Z'))]
 
 run_start_time = obtainRunStartTime(start_date_local)
 
@@ -320,6 +328,12 @@ while True:
             'average_heartrate': newRunAverageHeartRate,
             'max_heartrate': newRunMaxHeartRate
             })
+
+            message = client.messages.create(
+                from_=config.twilio_phone_number,
+                body='A new activity has been added to the dashboard. Take a look: https://weather-impact-on-running-performance.glitch.me/',
+                to=config.my_phone_number
+            )
 
 
 
