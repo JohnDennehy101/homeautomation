@@ -44,6 +44,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
   let cloudData = [];
   let humidityData = [];
   let perceivedTemperatureData = [];
+  let temperatureData = [];
   let pressureData = [];
   let rainVolumeData = [];
   let windSpeedData = [];
@@ -56,6 +57,19 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
 
     //cloudData = loopThroughWeatherData(weatherDataArr)
     cloudData = loopThroughWeatherData(weatherDataArr, "cloudCoverPercentage");
+    humidityData = loopThroughWeatherData(weatherDataArr, "humidity");
+    perceivedTemperatureData = loopThroughWeatherData(
+      weatherDataArr,
+      "perceivedTemperature"
+    );
+    temperatureData = loopThroughWeatherData(weatherDataArr, "temperature");
+    pressureData = loopThroughWeatherData(weatherDataArr, "pressure");
+    rainVolumeData = loopThroughWeatherData(
+      weatherDataArr,
+      "rainVolumeLastHour"
+    );
+    windSpeedData = loopThroughWeatherData(weatherDataArr, "windSpeed");
+    windGustData = loopThroughWeatherData(weatherDataArr, "windGust");
     timeData = WeatherTimeData(weatherDataArr);
   });
 
@@ -94,11 +108,278 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
-  var chart = new Chart(cloudCover, cloudCoverConfig);
+  var humidityConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: humidityData,
+          label: "Humidity",
+          borderColor: "#A4BFEB",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var perceivedTemperatureConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: perceivedTemperatureData,
+          label: "Perceived Temperature",
+          borderColor: "#A4A8D1",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var temperatureConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: temperatureData,
+          label: "Temperature",
+          borderColor: "#BBA0B2",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var pressureConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: pressureData,
+          label: "Pressure",
+          borderColor: "#376996",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var rainVolumeConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: rainVolumeData,
+          label: "Rain Volume",
+          borderColor: "#FFD25A",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var windSpeedConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: windSpeedData,
+          label: "WindSpeed",
+          borderColor: "#FFAA5A",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var windGustConfig = {
+    type: "line",
+    data: {
+      labels: timeData,
+      datasets: [
+        {
+          data: windGustData,
+          label: "Wind Gust",
+          borderColor: "#B6C197",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  var chart = new Chart(cloudCoverChart, cloudCoverConfig);
+  var chart = new Chart(humidityChart, humidityConfig);
+  var chart = new Chart(temperatureChart, temperatureConfig);
+  var chart = new Chart(perceivedTemperatureChart, perceivedTemperatureConfig);
+  var chart = new Chart(pressureChart, pressureConfig);
+  var chart = new Chart(windSpeedChart, windSpeedConfig);
+  var chart = new Chart(windGustChart, windGustConfig);
+  var chart = new Chart(rainVolumeChart, rainVolumeConfig);
   weatherDataArr = [];
 });
 
-var cloudCover = document.getElementById("cloudCoverChart").getContext("2d");
+var cloudCoverChart = document
+  .getElementById("cloudCoverChart")
+  .getContext("2d");
+var humidityChart = document.getElementById("humidityChart").getContext("2d");
+var temperatureChart = document
+  .getElementById("temperatureChart")
+  .getContext("2d");
+var perceivedTemperatureChart = document
+  .getElementById("perceivedTemperatureChart")
+  .getContext("2d");
+var pressureChart = document.getElementById("pressureChart").getContext("2d");
+var windSpeedChart = document.getElementById("windSpeedChart").getContext("2d");
+var windGustChart = document.getElementById("windGustChart").getContext("2d");
+var rainVolumeChart = document
+  .getElementById("rainVolumeChart")
+  .getContext("2d");
 
 let LatitudeLongitude = { lat: 53.3634, lng: -6.2579 };
 
