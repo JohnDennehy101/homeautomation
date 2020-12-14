@@ -35,8 +35,104 @@ runDataRef.on("value", function (snapshot) {
   let runDataArr = [];
   snapshot.forEach((child) => {
     runDataArr.push(child.val());
-    console.log(runDataArr);
   });
+  console.log(runDataArr);
+  let latestRun = runDataArr[runDataArr.length - 1];
+  console.log(latestRun);
+  let runContainerElem = document.createElement("div");
+  runContainerElem.style.width = "70%";
+  //runContainerElem.style.display = 'flex'
+  let mapElem = document.createElement("div");
+  mapElem.id = "map";
+  let runInfoContainerElem = document.createElement("div");
+  //Need to come back to this - adding material icons would be a nice touch
+  let averageRunCadence = document.createElement("p");
+  averageRunCadence.style.display = "inline-block";
+  averageRunCadence.style.width = "50%";
+  averageRunCadence.textContent = latestRun["average_cadence"];
+  let averageRunHeartRate = document.createElement("p");
+  averageRunHeartRate.style.display = "inline-block";
+  averageRunHeartRate.style.width = "50%";
+  averageRunHeartRate.textContent = latestRun["average_heartrate"];
+  let averageRunSpeed = document.createElement("p");
+  averageRunSpeed.style.display = "inline-block";
+  averageRunSpeed.style.width = "50%";
+  averageRunSpeed.textContent = latestRun["average_speed"];
+  //Latitude and Longitude positions for Google Maps Markers
+  let startLatitudeLongitude = latestRun["start_latlng"];
+  let endLatitudeLongitude = latestRun["end_latlng"];
+  let maxHeartRate = document.createElement("p");
+  maxHeartRate.textContent = latestRun["max_heartrate"];
+  maxHeartRate.style.display = "inline-block";
+  maxHeartRate.style.width = "50%";
+  let maxRunSpeed = document.createElement("p");
+  maxRunSpeed.style.display = "inline-block";
+  maxRunSpeed.style.width = "50%";
+  maxRunSpeed.textContent = latestRun["max_speed"];
+  let movingTime = document.createElement("p");
+  movingTime.style.display = "inline-block";
+  movingTime.style.width = "50%";
+  movingTime.textContent = latestRun["moving_time"];
+  let runDate = document.createElement("p");
+  runDate.style.display = "inline-block";
+  runDate.style.width = "50%";
+  runDate.textContent = latestRun["run_date"];
+
+  let runStartTime = document.createElement("p");
+  runStartTime.style.display = "inline-block";
+  runStartTime.style.width = "50%";
+  runStartTime.textContent = latestRun["start_time"];
+  let runEndTime = document.createElement("p");
+  runEndTime.style.display = "inline-block";
+  runEndTime.style.width = "50%";
+  runEndTime.textContent = latestRun["end_time"];
+
+  let activityType = document.createElement("p");
+  activityType.textContent = latestRun["type"];
+  activityType.style.display = "inline-block";
+  activityType.style.width = "50%";
+
+  //Polyline for Google Maps Display
+  let summaryPolyline = latestRun["summary_polyline"];
+
+  let runTitle = document.createElement("p");
+  runTitle.textContent = latestRun["title"];
+  runTitle.style.display = "inline-block";
+  runTitle.style.width = "50%";
+  let runElevationGain = document.createElement("p");
+  runElevationGain.style.display = "inline-block";
+  runElevationGain.style.width = "50%";
+  runElevationGain.textContent = latestRun["total_elevation_gain"];
+
+  //Appending items (probably will be changed)
+  runInfoContainerElem.appendChild(runTitle);
+  runInfoContainerElem.appendChild(runDate);
+
+  runInfoContainerElem.appendChild(averageRunCadence);
+
+  runInfoContainerElem.appendChild(averageRunHeartRate);
+  runInfoContainerElem.appendChild(maxHeartRate);
+
+  runInfoContainerElem.appendChild(averageRunSpeed);
+  runInfoContainerElem.appendChild(maxRunSpeed);
+
+  runInfoContainerElem.appendChild(runStartTime);
+  runInfoContainerElem.appendChild(runEndTime);
+
+  runInfoContainerElem.appendChild(movingTime);
+  runInfoContainerElem.appendChild(runElevationGain);
+
+  runInfoContainerElem.appendChild(activityType);
+
+  let latestRunContainerPlaceHolder = document.getElementById(
+    "latestRunContainerPlaceHolder"
+  );
+
+  runContainerElem.appendChild(runInfoContainerElem);
+  latestRunContainerPlaceHolder.appendChild(runContainerElem);
+
+  console.log(summaryPolyline);
+  console.log(weatherDataArr);
 });
 
 weatherDataRef.limitToLast(60).on("value", function (snapshot) {
