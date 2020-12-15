@@ -55,6 +55,40 @@ i {
   align-items: center;
 }
 
+#runChartsContainer {
+  margin: 20px auto;
+}
+.runChartsContainer {
+  /*display: flex;*/
+  display: inline-block !important;
+  /*flex-basis: calc(50% - 30px);
+  flex-wrap: wrap;
+  justify-content: space-between;*/
+  width: 30%;
+  margin: 20px;
+  align-items: center;
+}
+
+#bar-chart {
+  width: 30%;
+  height: 400px;
+  display: inline-block !important;
+  margin-bottom: 20px;
+}
+
+#averageSpeed-chart {
+  width: 30%;
+  height: 400px;
+  display: inline-block !important;
+  margin-bottom: 20px;
+}
+#runDistance-chart {
+  width: 30%;
+  height: 400px;
+  display: inline-block !important;
+  margin-bottom: 20px;
+}
+
 #map {
   height: 400px;
   width: 80% !important;
@@ -75,31 +109,15 @@ i {
     display: inline-block !important;
     margin-bottom: 20px;
   }
-  #perceivedTemperatureChart {
-    width: 30%;
-    height: 400px;
-    display: inline-block !important;
-    margin-bottom: 20px;
-  }
+
   #temperatureChart {
     width: 30%;
     height: 400px;
     display: inline-block !important;
     margin-bottom: 20px;
   }
+
   #pressureChart {
-    width: 30%;
-    height: 400px;
-    display: inline-block !important;
-    margin-bottom: 20px;
-  }
-  #rainVolumeChart {
-    width: 30%;
-    height: 400px;
-    display: inline-block !important;
-    margin-bottom: 20px;
-  }
-  #windSpeedChart {
     width: 30%;
     height: 400px;
     display: inline-block !important;
@@ -119,6 +137,28 @@ i {
     margin: 0px 5px;
   }
 
+  .runChartsContainer {
+    /*display: flex;*/
+    display: inline-block !important;
+    /*flex-basis: calc(50% - 30px);
+  flex-wrap: wrap;
+  justify-content: space-between;*/
+    width: 350px !important;
+    margin: 10px auto;
+  }
+
+  #averageSpeed-chart {
+    margin: 0px 10px;
+  }
+
+  #runDistance-chart {
+    margin: 0px 10px;
+  }
+
+  #bar-chart {
+    margin: 0px 10px;
+  }
+
   #cloudCoverChart {
     width: 350px !important;
     margin: 10px auto;
@@ -130,27 +170,13 @@ i {
     height: 400px;
   }
 
-  #perceivedTemperatureChart {
-    width: 350px !important;
-    margin: 10px auto;
-    height: 400px;
-  }
   #temperatureChart {
     width: 350px !important;
     margin: 10px auto;
     height: 400px;
   }
+
   #pressureChart {
-    width: 350px !important;
-    margin: 10px auto;
-    height: 400px;
-  }
-  #rainVolumeChart {
-    width: 350px !important;
-    margin: 10px auto;
-    height: 400px;
-  }
-  #windSpeedChart {
     width: 350px !important;
     margin: 10px auto;
     height: 400px;

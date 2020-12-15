@@ -33,10 +33,24 @@ const runDataRef = database.ref("runningData");
 
 runDataRef.on("value", function (snapshot) {
   let runDataArr = [];
+  let runCadenceArr = [];
+  let runAverageSpeedArr = [];
+  let runAverageHeartRateArr = [];
+  let runDistanceArr = [];
+  let runDateArr = [];
+  let runElevationGainArr = [];
   snapshot.forEach((child) => {
     runDataArr.push(child.val());
   });
-  console.log(runDataArr);
+  for (let i = 0; i < runDataArr.length; i++) {
+    runCadenceArr.push(runDataArr[i]["average_cadence"]);
+    runAverageSpeedArr.push(runDataArr[i]["average_speed"]);
+    runDistanceArr.push(runDataArr[i]["distance"]);
+    runElevationGainArr.push(runDataArr[i]["total_elevation_gain"]);
+    runAverageHeartRateArr.push(runDataArr[i]["average_heartrate"]);
+    runDateArr.push(runDataArr[i]["run_date"]);
+  }
+
   let latestRun = runDataArr[runDataArr.length - 1];
   console.log(latestRun);
   let runContainerElem = document.createElement("div");
@@ -230,10 +244,169 @@ runDataRef.on("value", function (snapshot) {
 
   //Commenting out to save on API calls
   //initMap(summaryPolyline, startLatitudeLongitude, endLatitudeLongitude)
-  console.log(startLatitudeLongitude);
+  console.log(runElevationGainArr);
+  new Chart(document.getElementById("bar-chart"), {
+    type: "bar",
+    data: {
+      labels: runDateArr,
+      datasets: [
+        {
+          label: "Run Average Cadence",
+          type: "line",
+          borderColor: "#8e5ea2",
+          data: runCadenceArr,
+          fill: false,
+        },
+        {
+          label: "Run Elevation Gain",
+          type: "line",
+          borderColor: "#3e95cd",
+          data: runElevationGainArr,
+          fill: false,
+        },
+        {
+          label: "Run Average Heart Rate",
+          type: "line",
+          borderColor: "#FF0000",
+          data: runAverageHeartRateArr,
+          fill: false,
+        },
+        {
+          label: "Run Average Cadence",
+          type: "bar",
+          backgroundColor: "rgba(0,0,0,0.2)",
+          data: runCadenceArr,
+        },
+        {
+          label: "Run Elevation Gain",
+          type: "bar",
+          backgroundColor: "rgba(0,0,0,0.2)",
+          backgroundColorHover: "#3e95cd",
+          data: runElevationGainArr,
+        },
+        {
+          label: "Run Average Heart Rate",
+          type: "bar",
+          backgroundColor: "rgba(0,0,0,0.2)",
+          backgroundColorHover: "#3e95cd",
+          data: runAverageHeartRateArr,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Elevation Gain",
+      },
+      legend: { display: true },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+    },
+  });
 
-  console.log(summaryPolyline);
-  console.log(weatherDataArr);
+  new Chart(document.getElementById("averageSpeed-chart"), {
+    type: "bar",
+    data: {
+      labels: runDateArr,
+      datasets: [
+        {
+          label: "Run Average Speed",
+          type: "line",
+          borderColor: "#ffa500",
+          data: runAverageSpeedArr,
+          fill: false,
+        },
+        {
+          label: "Run Average Speed",
+          type: "bar",
+          backgroundColor: "rgba(0,0,0,0.2)",
+          data: runAverageSpeedArr,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Run Average Speed (Metres Per Second)",
+      },
+      legend: { display: true },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  new Chart(document.getElementById("runDistance-chart"), {
+    type: "bar",
+    data: {
+      labels: runDateArr,
+      datasets: [
+        {
+          label: "Run Distance",
+          type: "line",
+          borderColor: "#00b300",
+          data: runDistanceArr,
+          fill: false,
+        },
+        {
+          label: "Run Distance",
+          type: "bar",
+          backgroundColor: "rgba(0,0,0,0.2)",
+          data: runDistanceArr,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Run Distance (Metres)",
+      },
+      legend: { display: true },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+            },
+          },
+        ],
+      },
+    },
+  });
 });
 
 function initMap(polyline, startLatitudeLongitude, endLatitudeLongitude) {
@@ -295,7 +468,8 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
   let cloudData = [];
   let humidityData = [];
   let perceivedTemperatureData = [];
-  let temperatureData = [];
+  let outdoorTemperatureData = [];
+  let indoorTemperatureData = [];
   let pressureData = [];
   let rainVolumeData = [];
   let windSpeedData = [];
@@ -313,7 +487,14 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
       weatherDataArr,
       "perceivedTemperature"
     );
-    temperatureData = loopThroughWeatherData(weatherDataArr, "temperature");
+    outdoorTemperatureData = loopThroughWeatherData(
+      weatherDataArr,
+      "outdoor_temperature"
+    );
+    indoorTemperatureData = loopThroughWeatherData(
+      weatherDataArr,
+      "indoor_temperature"
+    );
     pressureData = loopThroughWeatherData(weatherDataArr, "pressure");
     rainVolumeData = loopThroughWeatherData(
       weatherDataArr,
@@ -333,6 +514,13 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
           data: cloudData,
           label: "Cloud Cover Percentage",
           borderColor: "#808080",
+          fill: false,
+        },
+
+        {
+          data: rainVolumeData,
+          label: "Rain Volume",
+          borderColor: "#FFD25A",
           fill: false,
         },
       ],
@@ -394,50 +582,27 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
-  var perceivedTemperatureConfig = {
-    type: "line",
-    data: {
-      labels: timeData,
-      datasets: [
-        {
-          data: perceivedTemperatureData,
-          label: "Perceived Temperature",
-          borderColor: "#A4A8D1",
-          fill: false,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              autoSkip: false,
-            },
-          },
-        ],
-      },
-      responsive: false,
-      maintainAspectRatio: false,
-    },
-  };
-
   var temperatureConfig = {
     type: "line",
     data: {
       labels: timeData,
       datasets: [
         {
-          data: temperatureData,
+          data: outdoorTemperatureData,
           label: "Temperature",
           borderColor: "#BBA0B2",
+          fill: false,
+        },
+        {
+          data: indoorTemperatureData,
+          label: "Indoor Temperature",
+          borderColor: "#B6C197",
+          fill: false,
+        },
+        {
+          data: perceivedTemperatureData,
+          label: "Perceived Temperature",
+          borderColor: "#A4A8D1",
           fill: false,
         },
       ],
@@ -499,46 +664,17 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
-  var rainVolumeConfig = {
+  var windGustConfig = {
     type: "line",
     data: {
       labels: timeData,
       datasets: [
         {
-          data: rainVolumeData,
-          label: "Rain Volume",
-          borderColor: "#FFD25A",
+          data: windGustData,
+          label: "Wind Gust",
+          borderColor: "#B6C197",
           fill: false,
         },
-      ],
-    },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              autoSkip: false,
-            },
-          },
-        ],
-      },
-      responsive: false,
-      maintainAspectRatio: false,
-    },
-  };
-
-  var windSpeedConfig = {
-    type: "line",
-    data: {
-      labels: timeData,
-      datasets: [
         {
           data: windSpeedData,
           label: "WindSpeed",
@@ -569,49 +705,12 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
-  var windGustConfig = {
-    type: "line",
-    data: {
-      labels: timeData,
-      datasets: [
-        {
-          data: windGustData,
-          label: "Wind Gust",
-          borderColor: "#B6C197",
-          fill: false,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              autoSkip: false,
-            },
-          },
-        ],
-      },
-      responsive: false,
-      maintainAspectRatio: false,
-    },
-  };
-
   var chart = new Chart(cloudCoverChart, cloudCoverConfig);
   var chart = new Chart(humidityChart, humidityConfig);
   var chart = new Chart(temperatureChart, temperatureConfig);
-  var chart = new Chart(perceivedTemperatureChart, perceivedTemperatureConfig);
   var chart = new Chart(pressureChart, pressureConfig);
-  var chart = new Chart(windSpeedChart, windSpeedConfig);
   var chart = new Chart(windGustChart, windGustConfig);
-  var chart = new Chart(rainVolumeChart, rainVolumeConfig);
+
   weatherDataArr = [];
 });
 
@@ -622,15 +721,12 @@ var humidityChart = document.getElementById("humidityChart").getContext("2d");
 var temperatureChart = document
   .getElementById("temperatureChart")
   .getContext("2d");
-var perceivedTemperatureChart = document
-  .getElementById("perceivedTemperatureChart")
-  .getContext("2d");
+//var perceivedTemperatureChart = document.getElementById('perceivedTemperatureChart').getContext('2d');
+//var indoorTemperatureChart = document.getElementById('indoorTemperatureChart').getContext('2d');
 var pressureChart = document.getElementById("pressureChart").getContext("2d");
-var windSpeedChart = document.getElementById("windSpeedChart").getContext("2d");
+//var windSpeedChart = document.getElementById('windSpeedChart').getContext('2d');
 var windGustChart = document.getElementById("windGustChart").getContext("2d");
-var rainVolumeChart = document
-  .getElementById("rainVolumeChart")
-  .getContext("2d");
+//var rainVolumeChart = document.getElementById('rainVolumeChart').getContext('2d');
 
 let LatitudeLongitude = { lat: 53.3634, lng: -6.2579 };
 

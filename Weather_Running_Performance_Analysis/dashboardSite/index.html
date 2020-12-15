@@ -38,41 +38,64 @@
   </head>
 
 <body>
-    <h2>
-        Latest Run Overview
-    </h2>
-    <div id="latestRunContainerPlaceHolder">
+  <h2>
+    Latest Run Overview
+  </h2>
+  <div id="latestRunContainerPlaceHolder">
 
 
-    </div>
+  </div>
 
-    <!--<div id="container">
+  <!--<div id="container">
       <div id="map"></div>
         <p id="test">
      
     </p>
     </div>-->
-    <h2>
-        Weather Data - Last Hour
-    </h2>
-    <div id="weatherChartsContainer">
-        <canvas id="cloudCoverChart"></canvas>
 
-        <canvas id="humidityChart" width="400" height="400"></canvas>
-
-        <canvas id="perceivedTemperatureChart" width="400" height="400"></canvas>
-
-        <canvas id="temperatureChart" width="400" height="400"></canvas>
-
-        <canvas id="pressureChart" width="400" height="400"></canvas>
-
-        <canvas id="rainVolumeChart" width="400" height="400"></canvas>
-
-        <canvas id="windSpeedChart" width="400" height="400"></canvas>
+  <h2>
+    Run Trends
+  </h2>
+  <!--<div id="runChartsContainer">-->
+  <div id="parentRunChartContainer">
 
 
-        <canvas id="windGustChart" width="400" height="400"></canvas>
+    <div class="runChartsContainer">
+      <canvas id="bar-chart" width="400" height="450"></canvas>
     </div>
+    <div class="runChartsContainer">
+      <canvas id="averageSpeed-chart" width="400" height="450"></canvas>
+    </div>
+    <div class="runChartsContainer">
+      <canvas id="runDistance-chart" width="400" height="450"></canvas>
+    </div>
+
+  </div>
+
+
+  <h2>
+    Weather Data - Last Hour
+  </h2>
+  <div id="weatherChartsContainer">
+    <canvas id="cloudCoverChart"></canvas>
+
+    <canvas id="humidityChart" width="400" height="400"></canvas>
+
+    <!--<canvas id="perceivedTemperatureChart" width="400" height="400"></canvas>-->
+
+    <canvas id="temperatureChart" width="400" height="400"></canvas>
+
+    <!--<canvas id="indoorTemperatureChart" width="400" height="400"></canvas>-->
+
+    <canvas id="pressureChart" width="400" height="400"></canvas>
+
+    <!--<canvas id="rainVolumeChart" width="400" height="400"></canvas>-->
+
+    <!--<canvas id="windSpeedChart" width="400" height="400"></canvas>-->
+
+
+    <canvas id="windGustChart" width="400" height="400"></canvas>
+  </div>
 
 
 
