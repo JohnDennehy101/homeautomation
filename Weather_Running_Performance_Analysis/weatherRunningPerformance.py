@@ -5,7 +5,7 @@ import config
 from datetime import datetime, date, timedelta
 import threading
 from twilio.rest import Client
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 
 import firebase_admin
 from firebase_admin import credentials, firestore, storage, db
@@ -15,6 +15,10 @@ auth_token = config.twilio_auth_token
 
 #Initiating Twilio client
 client = Client(account_sid, auth_token)
+
+#Declaring SenseHat
+sense = SenseHat()
+sense.clear()
 
 runningApiCounter = 0
 weatherDataCounter = 0
@@ -138,17 +142,18 @@ while True:
 
 
 
-        #sense = SenseHat()
+       
 
-        #sensehatTemp = round(sense.get_temperature(), 2)
-        #sensehatPressure = round(sense.get_pressure(), 2)
-        #sensehatHumidity = round(sense.get_humidity(), 2)
-        #MAY PUSH TEMP FROM EITHER API RESPONSE OR SENSEHAT
+        #From testing I found the temperature from pressure was the most accurate for indoor temperature
+        sensehatTemp = round(sense.get_temperature_from_pressure(), 2)
+        sensehatPressure = round(sense.get_pressure(), 2)
+        sensehatHumidity = round(sense.get_humidity(), 2)
 
         weather_data_ref.push({
-        'temperature': apiResponseTemp,
-        'humidity': 20,
-        'pressure': apiResponsePressure,
+        'outdoor_temperature': apiResponseTemp,
+        'indoor_temperature': sensehatTemp,
+        'humidity': sensehatHumidity,
+        'pressure': sensehatPressure,
         'windSpeed': apiResponseWindSpeed,
         'windDirectionDegrees': apiResponseWindDegree,
         'windGust': apiResponseWindGust,
@@ -159,6 +164,7 @@ while True:
         'time': currentTime
         })
         weatherDataCounter = 0
+        sense.clear()
 #I think 300 will be good for production
     if runningApiCounter == 5:
         print("Starting anyway")
