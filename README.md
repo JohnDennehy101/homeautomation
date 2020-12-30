@@ -72,6 +72,11 @@ On detection of a new activity, I received an SMS message with a link to the Gli
 
 
 ## Overview - Automation of Light System
+
+Raspberry Pi with PiCamera for image analysis and PIR motion sensor connected via breadboard
+
+![picamera](https://github.com/JohnDennehy101/homeautomation/blob/master/readme_images/PiMotionSensorCamera.jpg?raw=true=250x250)
+
 **1. Automation of Lighting - Luminance Analysis using Picamera (Turning on Kasa Plug)**\
 [Youtube Video (Duration 4:46)](https://youtu.be/V9ObKrVNxlw)
 
@@ -177,9 +182,13 @@ Each button was configured for a specific action. The Soco Python library was us
 
 Both the Sense Hat and a third-party API (OpenWeather) were used to obtain weather data. This data was pushed to Firebase at a 2 minute interval.
 
+Raspberry Pi with Sense Hat linked to mini black hat hack3r to ensure accurate weather data readings
+
+![piweather](https://github.com/JohnDennehy101/homeautomation/blob/master/readme_images/PiSenseHatMiniBlackHatHackr.jpg?raw=true=250x250)
+
 The Strava API was polled at a 10 second interval to determine if a new activity had been added (by comparing the length of the first API response against the second). If there was a difference in length, the API response was sorted by date (to ensure the latest activity was pushed) and the data for the latest activity was pushed to Firebase.
 
-IMAGE
+![firebase](https://github.com/JohnDennehy101/homeautomation/blob/master/readme_images/firebase.png?raw=true)
 
 If a new activity was detected, the Twilio SMS API was used to send a message to my phone informing me that a new activity had been uploaded to Strava (with a link to the Glitch application dashboard).
 
