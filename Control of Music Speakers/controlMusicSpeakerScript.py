@@ -19,16 +19,6 @@ sonos_speaker = soco.SoCo(speakerIp)
 
 print(sonos_speaker)
 
-
-#device.clear_queue()
-#print("New Queue")
-#queue = device.get_queue()
-#for item in queue:
-    #print(item.title)
-
-
-
-
 # Defining function to detect which blue dot button has been pressed on the Android phone
 def pressed(pos):
 
@@ -83,13 +73,8 @@ def pressed(pos):
          print('pause playback')
          # Call .pause() method to pause the speaker
          sonos_speaker.pause()
-        #Pause playback
 
-        #Muting Device
-#device.volume = 0
-
-#Clearing queue
-#device.clear_queue()
+    
 
     print("button {}.{} pressed".format(pos, pos.row))
 
@@ -118,10 +103,3 @@ bd.when_pressed = pressed
 
 # Program is paused until action for that button is completed. Then blue dot sets blue dot to discovery again (waiting for additional button presses)
 pause()
-
-
-
-#print('working')
-#print(device.music_library.MusicLibrary.get_music_library_information('artists', start=0, max_items=100))
-#device.play_uri('http://ia801402.us.archive.org/20/items/TenD2005-07-16.flac16/TenD2005-07-16t10Wonderboy.mp3')
-#print(device.get_current_transport_info()['current_transport_state'])

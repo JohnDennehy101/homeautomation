@@ -44,9 +44,6 @@ i {
   align-items: center;
 }
 
-/* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-
 #weatherChartsContainer {
   display: flex;
   flex-basis: calc(50% - 30px);
@@ -59,11 +56,7 @@ i {
   margin: 20px auto;
 }
 .runChartsContainer {
-  /*display: flex;*/
   display: inline-block !important;
-  /*flex-basis: calc(50% - 30px);
-  flex-wrap: wrap;
-  justify-content: space-between;*/
   width: 30%;
   margin: 20px;
   align-items: center;
@@ -138,11 +131,7 @@ i {
   }
 
   .runChartsContainer {
-    /*display: flex;*/
     display: inline-block !important;
-    /*flex-basis: calc(50% - 30px);
-  flex-wrap: wrap;
-  justify-content: space-between;*/
     width: 350px !important;
     margin: 10px auto;
   }

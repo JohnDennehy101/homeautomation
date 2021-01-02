@@ -86,9 +86,6 @@ while True:
    longitude = coordinates[0]
    latitude = coordinates[1]
 
-   
-#longitude = -6.258265
-#latitude = 53.363245
 
    # Obtaining current timestamp
    now = datetime.datetime.now()

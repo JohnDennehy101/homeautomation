@@ -48,30 +48,19 @@ ref = db.reference('/')
 weather_data_ref = ref.child('weatherData')
 running_data_ref = ref.child('runningData')
 
-date = '2020-12-06T11:25:10'
-endTimeStr = date[(date.index('T') + 1): ]
-endTimeObject = datetime.strptime(endTimeStr, '%H:%M:%S')
-moving_time = 2851
 
 # Declaring convert function to strip time from date and time string
-def convert(n): 
-    string = str(endTimeObject + timedelta(seconds = n))
+def convert(n, startRunTimeObject): 
+    string = str(startRunTimeObject + timedelta(seconds = n))
     timeString = string[11:]
     return timeString
     
 
 
-
-run_end_time = convert(moving_time) 
-
-start_date_local = '2020-12-06T11:25:10'
-
 # Declaring function to obtain run date from string that contains both date and time
 def obtainRunDate(unformattedDateString):
     return unformattedDateString[ :(unformattedDateString.index('T'))]
 
-
-run_date = obtainRunDate(start_date_local)
 
 # Declaring function to obtain run start time from string that contains both date and time
 def obtainRunStartTime(unformattedDateString):
@@ -92,37 +81,27 @@ secondApiArr = None
 # Declaring function to loop through first API response from Strava and only filter activities that are equal to 'Run'. The firstApiCallRunsArray thread is then set
 def populatingFirstApiCallRunArray (numberOfRuns, r):
     testArr = []
-    #for x in range(len(numberOfRuns)):
     for x in range(numberOfRuns):
         if r[x]["type"] == 'Run':
-            #firstApiCallRunsArray.append(r[x])
             testArr.append(r[x])
     
     global firstApiArr
-    #print(testArr)
     firstApiArr = testArr
-    #print(firstApiArr)
     firstApiCallRunsArray.set()
     return testArr
-    #time.sleep(5)
 
 
 # Declaring function to loop through second API response from Strava and only filter activities that are equal to 'Run'. The secondApiCallRunsArray thread is then  set
 def populatingSecondApiCallRunArray (numberOfRuns, r):
     testArr = []
-    #for x in range(len(numberOfRuns)):
     for x in range(numberOfRuns):
         if r[x]["type"] == 'Run':
-            #firstApiCallRunsArray.append(r[x])
             testArr.append(r[x])
     
     global secondApiArr
-    #print(testArr)
     secondApiArr = testArr
-    #print(firstApiArr)
     secondApiCallRunsArray.set()
     return testArr
-    #time.sleep(5)
     
 
 
@@ -202,7 +181,6 @@ while True:
 
         # Sense hat is cleared
         sense.clear()
-#I think 300 will be good for production
 
     # If the value of runningApiCounter is equal to 1, call the Strava API to see the current number of run activites that are recorded
     if runningApiCounter == 1:
@@ -331,7 +309,7 @@ while True:
             newRunStartDateLocal = sortedRunsArray[0]["start_date_local"]
             newRunDate = obtainRunDate(newRunStartDateLocal)
             newRunStartTime = obtainRunStartTime(newRunStartDateLocal)
-            newRunEndTime = convert(newRunMovingTime)
+            newRunEndTime = convert(newRunMovingTime, newRunStartDateLocal)
             newRunStartLatitudeLongitude = sortedRunsArray[0]["start_latlng"]
             newRunEndLatitudeLongitude = sortedRunsArray[0]["end_latlng"]
             newRunSummaryPolyline = sortedRunsArray[0]["map"]["summary_polyline"]
@@ -379,7 +357,6 @@ while True:
         #weatherDataCounter = 0
 
     
-    #print(firstApiCallRunsArray)
 
     # runningApiCounter and weatherDataCounter are both incremented by 1 at the end of the program loop
     runningApiCounter = runningApiCounter + 1

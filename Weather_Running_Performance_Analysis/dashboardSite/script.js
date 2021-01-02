@@ -1,12 +1,5 @@
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
-  /*apiKey: process.env.apiKey,
-    authDomain: process.env.authDomain,
-    databaseURL: process.env.databaseURL,
-    projectId: process.env.projectId,
-storageBucket: process.env.storageBucket,
-  messagingSenderId: process.env.messagingSenderId,
-  appId: process.env.appId,*/
   apiKey: config.firebaseApiKey,
   authDomain: config.firebaseAuthDomain,
   databaseURL: config.firebaseDatabaseURL,
@@ -18,10 +11,6 @@ storageBucket: process.env.storageBucket,
 
 firebase.initializeApp(firebaseConfig);
 
-/*firebase.database().ref('weather-running-performance-default-rtdb/test').once('value').then(function(snapshot) {
-    console.log(snapshot);
-});*/
-
 // Get a reference to the database service
 const database = firebase.database();
 
@@ -31,6 +20,7 @@ const weatherDataRef = database.ref("weatherData");
 // Create run database reference
 const runDataRef = database.ref("runningData");
 
+//On addition of a new run activity to Firebase, the dashboard is updated (dynamically rendering HTML5 elements)
 runDataRef.on("value", function (snapshot) {
   let runDataArr = [];
   let runCadenceArr = [];
@@ -39,9 +29,11 @@ runDataRef.on("value", function (snapshot) {
   let runDistanceArr = [];
   let runDateArr = [];
   let runElevationGainArr = [];
+  //Each run activity in Firebase is pushed to the runDataArr
   snapshot.forEach((child) => {
     runDataArr.push(child.val());
   });
+  //Loops through runDataArr to populate different arrays with distinct metrics from each run (cadence, speed, distance, elevation, average heart rate, run date)
   for (let i = 0; i < runDataArr.length; i++) {
     runCadenceArr.push(runDataArr[i]["average_cadence"]);
     runAverageSpeedArr.push(runDataArr[i]["average_speed"]);
@@ -51,56 +43,49 @@ runDataRef.on("value", function (snapshot) {
     runDateArr.push(runDataArr[i]["run_date"]);
   }
 
+  //Obtaining latest run info
   let latestRun = runDataArr[runDataArr.length - 1];
   console.log(latestRun);
+  //Dynamically creating elements for dashboard
   let runContainerElem = document.createElement("div");
-  //runContainerElem.id = 'runContainerMap'
-  //runContainerElem.style.width = '70%';
-  //runContainerElem.style.display = 'flex'
   let mapElem = document.createElement("div");
   mapElem.id = "map";
   let runInfoContainerElem = document.createElement("div");
-  //Need to come back to this - adding material icons would be a nice touch
-  //let averageRunCadence = document.createElement('p')
+  //Elements for average run cadence
   let averageRunCadence = document.createElement("div");
   averageRunCadence.classList.add("runMetric");
-  //averageRunCadence.style.display = 'inline-block'
   averageRunCadence.style.width = "50%";
-  //averageRunCadence.textContent = 'Average Cadence ' + latestRun['average_cadence']
   averageRunCadence.innerHTML =
     '<p>Average Cadence</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["average_cadence"] +
     "</p>";
 
-  //let averageRunHeartRate = document.createElement('p')
+  //Elements for average run heart rate
   let averageRunHeartRate = document.createElement("div");
-  //averageRunHeartRate.style.display = 'inline-block'
   averageRunHeartRate.classList.add("runMetric");
   averageRunHeartRate.style.width = "50%";
-  //averageRunHeartRate.textContent = 'Average Heart Rate ' + latestRun['average_heartrate']
   averageRunHeartRate.innerHTML =
     '<p>Average Heart Rate</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["average_heartrate"] +
     "</p>";
 
-  //let averageRunSpeed = document.createElement('p')
+  //Elements for average run speed
   let averageRunSpeed = document.createElement("div");
   averageRunSpeed.classList.add("runMetric");
-  //averageRunSpeed.style.display = 'inline-block'
   averageRunSpeed.style.width = "50%";
-  //averageRunSpeed.textContent = 'Average Speed ' + latestRun['average_speed']
   averageRunSpeed.innerHTML =
     '<p>Average Speed</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["average_speed"] +
     "</p>";
-  //Latitude and Longitude positions for Google Maps Markers
+
+  //Latitude and Longitude positions for Google Maps Markers (obtained from latestRun object)
   let startLatitudeLongitude = latestRun["start_latlng"];
   let endLatitudeLongitude = latestRun["end_latlng"];
 
-  //let maxHeartRate = document.createElement('p')
+  //Elements for run max heart rate
   let maxHeartRate = document.createElement("div");
   maxHeartRate.classList.add("runMetric");
   maxHeartRate.innerHTML =
@@ -108,36 +93,30 @@ runDataRef.on("value", function (snapshot) {
     "<p>" +
     latestRun["max_heartrate"] +
     "</p>";
-  //maxHeartRate.textContent = 'Max Heart Rate ' + latestRun['max_heartrate']
-  //maxHeartRate.style.display = 'inline-block'
   maxHeartRate.style.width = "50%";
 
-  //let maxRunSpeed = document.createElement('p')
+  //Elements for run max speed
   let maxRunSpeed = document.createElement("div");
   maxRunSpeed.classList.add("runMetric");
-  //maxRunSpeed.style.display = 'inline-block'
   maxRunSpeed.style.width = "50%";
-  //maxRunSpeed.textContent = 'Max Speed ' + latestRun['max_speed']
   maxRunSpeed.innerHTML =
     '<p>Max Speed</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["max_speed"] +
     "</p>";
 
-  //let movingTime = document.createElement('p')
+  //Elements for run moving time
   let movingTime = document.createElement("div");
   movingTime.classList.add("runMetric");
-  //movingTime.style.display = 'inline-block'
   movingTime.style.width = "50%";
-  //movingTime.textContent = 'Moving Time (seconds) ' + latestRun['moving_time']
   movingTime.innerHTML =
     '<p>Moving Time (seconds)</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["moving_time"] +
     "</p>";
-  //let runDate = document.createElement('p')
+
+  //Elements for run date
   let runDate = document.createElement("div");
-  //runDate.style.display = 'inline-block'
 
   runDate.style.width = "50%";
   runDate.classList.add("runMetric");
@@ -146,33 +125,29 @@ runDataRef.on("value", function (snapshot) {
     "<p>" +
     latestRun["run_date"] +
     "</p>";
-  //runDate.textContent = 'Run Date ' + latestRun['run_date']
 
-  //let runStartTime = document.createElement('p')
+  //Elements for run start time
   let runStartTime = document.createElement("div");
   runStartTime.classList.add("runMetric");
-  //runStartTime.style.display = 'inline-block'
   runStartTime.style.width = "50%";
-  //runStartTime.textContent = 'Start Time ' + latestRun['start_time']
   runStartTime.innerHTML =
     '<p>Run Start Time</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["start_time"] +
     "</p>";
 
-  //let runEndTime = document.createElement('p')
+  //Elements for run end time
   let runEndTime = document.createElement("div");
   runEndTime.classList.add("runMetric");
-  //runEndTime.style.display = 'inline-block'
   runEndTime.style.width = "50%";
-  //runEndTime.textContent = 'End Time ' + latestRun['end_time']
   runEndTime.innerHTML =
     '<p>Run End Time</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["end_time"] +
     "</p>";
 
-  //let activityType = document.createElement('p')
+
+  //Elements for activity type
   let activityType = document.createElement("div");
   activityType.classList.add("runMetric");
   activityType.innerHTML =
@@ -180,38 +155,31 @@ runDataRef.on("value", function (snapshot) {
     "<p>" +
     latestRun["type"] +
     "</p>";
-  //activityType.textContent = 'Activity Type ' + latestRun['type']
-  //activityType.style.display = 'inline-block'
   activityType.style.width = "50%";
 
   //Polyline for Google Maps Display
   let summaryPolyline = latestRun["summary_polyline"];
 
-  //let runTitle = document.createElement('p')
+  //Elements for run title
   let runTitle = document.createElement("div");
   runTitle.classList.add("runMetric");
 
-  //runTitle.textContent = 'Activity Title ' + latestRun['title']
   runTitle.innerHTML =
     '<p>Activity Title</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["title"] +
     "</p>";
-  //runTitle.style.display = 'inline-block';
   runTitle.style.width = "50%";
-  //let runElevationGain = document.createElement('p')
   let runElevationGain = document.createElement("div");
   runElevationGain.classList.add("runMetric");
-  //runElevationGain.style.display = 'inline-block'
   runElevationGain.style.width = "50%";
-  //runElevationGain.textContent = 'Total Elevation Gain ' + latestRun['total_elevation_gain']
   runElevationGain.innerHTML =
     '<p>Elevation Gain</p><i class="material-icons">arrow_forward</i>' +
     "<p>" +
     latestRun["total_elevation_gain"] +
     "</p>";
 
-  //Appending items (probably will be changed)
+  //Appending dashboard items to runInfoContainerElem (parent div element on dashboard for latest run activity info)
   runInfoContainerElem.appendChild(runTitle);
   runInfoContainerElem.appendChild(runDate);
 
@@ -242,9 +210,10 @@ runDataRef.on("value", function (snapshot) {
   latestRunContainerPlaceHolder.appendChild(mapElem);
   latestRunContainerPlaceHolder.appendChild(runContainerElem);
 
-  //Commenting out to save on API calls
-  //initMap(summaryPolyline, startLatitudeLongitude, endLatitudeLongitude)
-  console.log(runElevationGainArr);
+  //Displaying Google Maps on dashboard with Polyline from Strava API response
+  initMap(summaryPolyline, startLatitudeLongitude, endLatitudeLongitude)
+
+  //Creating bar charts for run trends
   new Chart(document.getElementById("bar-chart"), {
     type: "bar",
     data: {
@@ -409,6 +378,7 @@ runDataRef.on("value", function (snapshot) {
   });
 });
 
+//This function declares a Google Maps map which takes the polyline (from Strava API response), latitude and longitude to display a map on the dashboard with the run route marked (with markers for start and end positions)
 function initMap(polyline, startLatitudeLongitude, endLatitudeLongitude) {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 53.3634, lng: -6.2579 },
@@ -443,7 +413,6 @@ function initMap(polyline, startLatitudeLongitude, endLatitudeLongitude) {
     lat: startLatitudeLongitude[0],
     lng: startLatitudeLongitude[1],
   };
-  console.log(startLatLng);
   let endLatLng = {
     lat: endLatitudeLongitude[0],
     lng: endLatitudeLongitude[1],
@@ -463,7 +432,8 @@ function initMap(polyline, startLatitudeLongitude, endLatitudeLongitude) {
   });
 }
 
-weatherDataRef.limitToLast(60).on("value", function (snapshot) {
+//Reference to firebase 'weatherData' to obtain last 30 records in database (as info is pushed to firebase at a 2 minute interval, the weather data displayed is for the last hour)
+weatherDataRef.limitToLast(30).on("value", function (snapshot) {
   let timeData = [];
   let cloudData = [];
   let humidityData = [];
@@ -475,12 +445,10 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
   let windSpeedData = [];
   let windGustData = [];
 
+  //Populating weatherDataArr with weather data from Firebase. This is then used to populate different arrays that are used with Chart.js charts to show weather information for the past hour
   snapshot.forEach((child) => {
-    //console.log(child.key, child.val());
     weatherDataArr.push(child.val());
-    //console.log("intVal",cloudDataArr);
 
-    //cloudData = loopThroughWeatherData(weatherDataArr)
     cloudData = loopThroughWeatherData(weatherDataArr, "cloudCoverPercentage");
     humidityData = loopThroughWeatherData(weatherDataArr, "humidity");
     perceivedTemperatureData = loopThroughWeatherData(
@@ -505,6 +473,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     timeData = WeatherTimeData(weatherDataArr);
   });
 
+  //Chart.js configuration for cloud cover
   var cloudCoverConfig = {
     type: "line",
     data: {
@@ -547,6 +516,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
+  //Chart.js configuration for humidity
   var humidityConfig = {
     type: "line",
     data: {
@@ -582,6 +552,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
+  //Chart.js configuration for temperature
   var temperatureConfig = {
     type: "line",
     data: {
@@ -629,6 +600,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
+  //Chart.js configuration for pressure
   var pressureConfig = {
     type: "line",
     data: {
@@ -664,6 +636,8 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
+
+  //Chart.js configuration for wind gust
   var windGustConfig = {
     type: "line",
     data: {
@@ -705,6 +679,7 @@ weatherDataRef.limitToLast(60).on("value", function (snapshot) {
     },
   };
 
+  //Initialising the different charts
   var chart = new Chart(cloudCoverChart, cloudCoverConfig);
   var chart = new Chart(humidityChart, humidityConfig);
   var chart = new Chart(temperatureChart, temperatureConfig);
@@ -721,12 +696,10 @@ var humidityChart = document.getElementById("humidityChart").getContext("2d");
 var temperatureChart = document
   .getElementById("temperatureChart")
   .getContext("2d");
-//var perceivedTemperatureChart = document.getElementById('perceivedTemperatureChart').getContext('2d');
-//var indoorTemperatureChart = document.getElementById('indoorTemperatureChart').getContext('2d');
+
 var pressureChart = document.getElementById("pressureChart").getContext("2d");
-//var windSpeedChart = document.getElementById('windSpeedChart').getContext('2d');
+
 var windGustChart = document.getElementById("windGustChart").getContext("2d");
-//var rainVolumeChart = document.getElementById('rainVolumeChart').getContext('2d');
 
 let LatitudeLongitude = { lat: 53.3634, lng: -6.2579 };
 
@@ -736,66 +709,16 @@ function loopThroughWeatherData(arr, weatherCondition) {
   let finalArr = [];
   for (i = 0; i < arr.length; i++) {
     finalArr.push(arr[i][weatherCondition]);
-    //finalArr.push(arr[i].cloudCoverPercentage);
-    //cloudCoverPercentage: 54
-    description: "Cloudy";
-    humidity: 20;
-    perceivedTemperature: 2.6;
-    pressure: 10;
-    rainVolumeLastHour: 0;
-    temperature: 3.2;
-    time: "14:14:45";
-    windDirectionDegrees: 90;
-    windGust: 2.4;
-    windSpeed: 3.5;
   }
   return finalArr;
 }
 
-function test(time) {
-  console.log(time);
-}
-
-test(timeData);
 
 function WeatherTimeData(arr) {
   let finalArr = [];
   for (i = 0; i < arr.length; i++) {
     finalArr.push(arr[i].time);
-    //cloudCoverPercentage: 54
-    description: "Cloudy";
-    humidity: 20;
-    perceivedTemperature: 2.6;
-    pressure: 10;
-    rainVolumeLastHour: 0;
-    temperature: 3.2;
-    time: "14:14:45";
-    windDirectionDegrees: 90;
-    windGust: 2.4;
-    windSpeed: 3.5;
   }
   return finalArr;
 }
 
-// Sync on any updates to the DB. THIS CODE RUNS EVERY TIME AN UPDATE OCCURS ON THE DB.
-camRef.limitToLast(1).on("value", function (snapshot) {
-  snapshot.forEach(function (childSnapshot) {
-    const image = childSnapshot.val()["test"];
-    console.log(image);
-    document.getElementById("test").textContent = image;
-  });
-});
-
-function getDateData() {
-  var data = [];
-  for (var i = 0; i < assessmentDates.length; i++) {
-    let time = assessmentDates[i].indexOf("-202");
-    let formattedDate = "";
-
-    formattedDate = assessmentDates[i].substr(0, time);
-
-    data.push(formattedDate);
-  }
-
-  return data;
-}

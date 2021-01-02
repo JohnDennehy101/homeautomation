@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>YourPiAtHome</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
+  <title>YourPiAtHome</title>
 
-    <!-- Script for Google font - Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-    <!--Open Sans Google Font family -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <!-- import the webpage's stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+  <!-- import the webpage's javascript file -->
+  <script src="/script.js" defer></script>
 
-    <!-- Commenting out Google Maps Scripts for now to save on API calls -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-      src=`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&callback=initMap&libraries=geometry&v=weekly`
-      defer
-    ></script>
+  <!-- Script for Google font - Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!--Script for chart.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  
-  </head>
+  <!--Open Sans Google Font family -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- Commenting out Google Maps Scripts for now to save on API calls -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script
+    src=`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&callback=initMap&libraries=geometry&v=weekly`
+    defer></script>
+
+  <!--Script for chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+</head>
 
 <body>
   <h2>
@@ -46,17 +46,11 @@
 
   </div>
 
-  <!--<div id="container">
-      <div id="map"></div>
-        <p id="test">
-     
-    </p>
-    </div>-->
 
   <h2>
     Run Trends
   </h2>
-  <!--<div id="runChartsContainer">-->
+  <!--Running Metric Charts-->
   <div id="parentRunChartContainer">
 
 
@@ -76,22 +70,16 @@
   <h2>
     Weather Data - Last Hour
   </h2>
+  <!--Weather charts-->
   <div id="weatherChartsContainer">
     <canvas id="cloudCoverChart"></canvas>
 
     <canvas id="humidityChart" width="400" height="400"></canvas>
 
-    <!--<canvas id="perceivedTemperatureChart" width="400" height="400"></canvas>-->
 
     <canvas id="temperatureChart" width="400" height="400"></canvas>
 
-    <!--<canvas id="indoorTemperatureChart" width="400" height="400"></canvas>-->
-
     <canvas id="pressureChart" width="400" height="400"></canvas>
-
-    <!--<canvas id="rainVolumeChart" width="400" height="400"></canvas>-->
-
-    <!--<canvas id="windSpeedChart" width="400" height="400"></canvas>-->
 
 
     <canvas id="windGustChart" width="400" height="400"></canvas>
@@ -103,4 +91,5 @@
 
 
 </body>
+
 </html>
